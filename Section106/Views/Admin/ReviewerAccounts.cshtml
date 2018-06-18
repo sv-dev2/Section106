@@ -1,0 +1,165 @@
+﻿@using Section106.Models.Models
+@using Section106.Models.Enums
+@model List<RequestVM>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <div class="dashboard-title">
+            <h3>Account</h3>
+        </div>
+    </div>
+</div>
+
+@*<div class="row margin-top30 form-horizontal">
+        <div class="col-md-12 text-center">
+            <h2>Not impelemented yet...</h2>
+        </div>
+    </div>*@
+
+<div class="row">
+    <div class="col-md-3">
+    <select id="userType" onchange="refreshDataTable()" class="form-control">
+        <option value="1">Submitters</option>
+        <option value="2">Reviewers</option>
+    </select>
+    </div>
+    <div class="col-md-9 text-right">
+        <a class="btn btn-info" href="~/Account/CreateReviewerAccount">Create Reviewer Account</a>
+    </div>
+</div>
+
+<div class="row margin-top30 form-horizontal">
+    <div class="col-md-12">
+        <div class="section-col-box">
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="myTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>User Name</th>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>Mobile Number</th>
+                                    <th>Role</th>
+                                    <th class="action_100">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        @*$('#myTable').DataTable({
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "searching": false,
+
+            "ajax": {
+                //"url": "/Admin/GetReviewers",
+                "url": "@Url.Action("GetReviewers", "Admin")",
+                "type": "Get",
+                "datatype": "json"
+            },
+            "columns": [
+                 { "data": "UserName", "name": "UserName", "orderable": false },
+                { "data": "Name", "name": "Name", "orderable": false },
+                { "data": "Address1", "name": "Address1", "orderable": false },
+                { "data": "MobileNumber", "name": "MobileNumber", "orderable": false },
+                { "data": "Role", "name": "Role", "orderable": false },
+                { "data": "UserId", "name": "UserId", "orderable": false },
+            ],
+            "columnDefs": [{
+                "targets": 5,
+                "data": "download_link",
+                "render": function (data, type, full, meta) {
+                    return '<a href=/Account/EditReviewerAccount?UserId=' + data + ' title="Edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>'
+                }
+            },
+            {
+                "targets": 2,
+                "data": "download_link",
+                "render": function (data, type, full, meta) {
+                    var fullAddress = full.Address1 + ", " + (full.Address2 != null ? full.Address2 : "") + full.City + ", " + full.StateName;
+                    return fullAddress;
+                }
+            }],
+        });*@
+
+
+
+
+        $('#myTable').DataTable({
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "searching": true,
+
+            "ajax": {
+                //"url": "/Admin/GetReviewers",
+                "url": "@Url.Action("GetAccountUsers", "Admin")",
+            "type": "Get",
+            "datatype": "json"
+        },
+            "columns": [
+                 { "data": "UserName", "name": "UserName", "orderable": false },
+                { "data": "Name", "name": "Name", "orderable": false },
+                { "data": "Address1", "name": "Address1", "orderable": false },
+                { "data": "MobileNumber", "name": "MobileNumber", "orderable": false },
+                { "data": "Role", "name": "Role", "orderable": false },
+                { "data": "UserId", "name": "UserId", "orderable": false },
+            ],
+            "columnDefs": [{
+                "targets": 5,
+                "data": "download_link",
+                "render": function (data, type, full, meta) {
+                    debugger;
+                   
+                        return '<a href=/Account/EditReviewerAccount?UserId=' + data + ' title="Edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i> Edit</a>'
+                   
+                }
+            },
+            {
+                "targets": 2,
+                "data": "download_link",
+                "render": function (data, type, full, meta) {
+                    var fullAddress = full.Address1 + ", " + (full.Address2 != null ? full.Address2 : "") + full.City + ", " + full.StateName;
+                    return fullAddress;
+                }
+            }],
+            });
+
+    });
+    function refreshDataTable()
+    {
+        debugger;
+        var type = $("#userType").val();
+        var datatable = $('#myTable').DataTable();
+        datatable.search(type).draw();
+    }
+
+</script>
+<style>
+    .dataTables_wrapper .dataTables_filter {
+    visibility: hidden;
+}
+</style>

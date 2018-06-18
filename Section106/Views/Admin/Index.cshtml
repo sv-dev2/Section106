@@ -1,0 +1,220 @@
+﻿@using Section106.Models.Models
+@using Section106.Models.Enums
+@model List<RequestVM>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <div class="dashboard-title">
+            <h3>Admin Dashboard</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 text-right">
+        <a class="btn btn-info" href="/Admin/GenerateProjectReportPdf">Projects Report</a>
+        <a class="btn btn-info" href="/Admin/Create">New Request</a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        @Html.DropDownList("Status", new SelectList(ViewBag.StatusList, "Value", "Text", ViewBag.SelectedStatus), "Select Status", new { @class = "form-control", @onchange = "refreshDataTable()" })
+    </div>
+    <div class="col-md-9 text-right">
+        @*<a class="btn btn-info" href="/Submitter/Create">New Request</a>*@
+    </div>
+</div>
+
+<div class="row margin-top30 form-horizontal">
+    <div class="col-md-12">
+        <div class="section-col-box">
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="myTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Request Name</th>
+                                    <th>Submitted By</th>
+                                    <th>Received Date</th>
+                                    <th>Status</th>
+                                    <th>Remaining Days</th>
+                                    <th class="action_100">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('#myTable').DataTable({
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": true, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "searching": true,
+
+            "ajax": {
+                //"url": "/Admin/GetUserRequestsByStatus",
+                "url": "@Url.Action("GetUserRequestsByStatus", "Admin")",
+                "type": "Get",
+                "datatype": "json"
+            },
+            "columns": [
+                 { "data": "ProjectName", "name": "ProjectName", "orderable": false },
+                { "data": "UserName", "name": "UserName", "orderable": false },
+                { "data": "ProjectDate", "name": "ProjectDate", "orderable": false },
+                { "data": "StatusStr", "name": "StatusStr", "orderable": false },
+                { "data": "InternalRemainingDays", "name": "InternalRemainingDays", "orderable": false },
+                { "data": "RequestId", "name": "RequestId", "orderable": false },
+            ],
+            "columnDefs": [
+                    {
+                        "targets": 5,
+                        "data": "download_link",
+                        "render": function (data, type, full, meta) {
+                            debugger;
+                            if (full.Status == (@Convert.ToInt16(RequestStatus.Submitted))) {
+                                if (full.IsRequestAssignedAlready) {
+                                    return '<a href=/Admin/Assign?RequestId=' + data + ' title="Review" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Review and Reassign</a>'
+                                }
+                                else{
+                                    return '<a href=/Admin/Assign?RequestId=' + data + ' title="Review" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Review and Assign</a>'
+                                }
+                            }
+                            else if(full.Status == (@Convert.ToInt16(RequestStatus.Assigned))) {
+                                return '<a href=/Admin/Response?RequestId=' + data + ' title="Check Reviewers Response" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Check Reviewers Response</a>'
+                            }
+                            else if(full.Status == (@Convert.ToInt16(RequestStatus.Returned))) {
+                                return '<a href=/Admin/Assign?RequestId=' + data + ' title="Check User Response" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Check User Response</a>'
+                            }
+                            else if(full.Status == (@Convert.ToInt16(RequestStatus.Rejected))) {
+                                return '<a href=/Admin/View?RequestId=' + data + ' title="View Request" class="btn btn-default btn-xs"><i class="fa fa-eye"> View Request</i></a>'
+                            }
+                            else if(full.Status == (@Convert.ToInt16(RequestStatus.Completed))) {
+                                return '<a href=/Admin/View?RequestId=' + data + ' title="View Request" class="btn btn-default btn-xs"><i class="fa fa-eye"> View Request</i></a>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.Saved)))) {
+                                return '<a href="/Admin/Edit?RequestId=' + data + '" title="Edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>  <button onclick="deleteRequest('+data+')" title="Delete" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>'
+                            }
+                        }
+                    },
+                    {
+                        "targets": 4,
+                        "render": function (data, type, full, meta) {
+                            if(full.Status==(@(Convert.ToInt32(RequestStatus.Completed))))
+                            {
+                                return '<span class="label label-success padd_6">Request Completed</span>'
+                            }
+                            if (full.Status == (@(Convert.ToInt32(PublicStatus.Saved)))) {
+                                return '<span class="label label-default padd_6">Request not submitted</span>'
+                            }
+                            else if(full.Status==(@(Convert.ToInt32(RequestStatus.Rejected))))
+                            {
+                                return '<span class="label label-danger padd_6">Request Rejected</span>'
+                            }
+                            else if(full.Status == (@(Convert.ToInt32(RequestStatus.Submitted))) || full.Status == (@(Convert.ToInt32(RequestStatus.Assigned))) || full.Status == (@(Convert.ToInt32(RequestStatus.Returned)))) {
+                                if (full.IsRequestAssignedAlready) {
+                                    if (full.InternalRemainingDays < 0) {
+                                        return '<span class="label label-default padd_6">Response is '+full.InternalRemainingDays.substr(1,full.InternalRemainingDays.length)+' days late</span>'
+                                    }
+                                    if (full.InternalRemainingDays <= 5) {
+                                        return '<span class="label label-danger padd_6">'+full.InternalRemainingDays+' Days Remaining</span>'
+                                    }
+                                    else if (full.InternalRemainingDays > 5 && full.InternalRemainingDays <= 10) {
+                                        return '<span class="label label-warning padd_6">'+full.InternalRemainingDays+' Days Remaining</span>'
+                                    }
+                                    else {
+                                        return '<span class="label label-primary padd_6">'+full.InternalRemainingDays+' Days Remaining</span>'
+                                    }
+                                }
+                                else{
+                                    return '<span class="label label-default padd_6">Request not assigned</span>'
+                                }
+                            }
+                        }
+                    },
+                     {
+                         "targets": 2,
+                         "render": function (data, type, full, meta) {
+                             if (data != null) {
+                                 var dateString = data.substr(6);
+                                 var currentTime = new Date(parseInt(dateString));
+                                 var month = currentTime.getMonth() + 1;
+                                 var day = currentTime.getDate();
+                                 var year = currentTime.getFullYear();
+                                 var date = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
+                                 return date;
+                             }
+                             return null;
+                         }
+                     }
+            ],
+            'order': [[1, 'asc']]
+        });
+
+        $("#myTable_filter").hide();
+    });
+
+    function refreshDataTable() {
+        debugger;
+        var status = $("#Status").val();
+        var datatable = $('#myTable').DataTable();
+        datatable.search(status).draw();
+    }
+    function deleteRequest(requestId) {
+        bootbox.confirm({
+            message: "Are you sure you want to delete this request?",
+            title: "Delete Request",
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+
+                    $.ajax({
+                        url:'@Url.Action("Delete", "Admin")',
+                        type:'Get',
+                        data:{ RequestId : requestId },
+                        success:function (res) {
+                            if (res) {
+                                toastr.success("Request deleted successfully.");
+                                setTimeout(function(){
+                                    window.location.reload();
+                                }, 1000);
+                            }
+                            else{
+                                toastr.error("Request not deleted.");
+                            }
+                        }
+                    })
+
+                }
+            }
+        })
+
+
+    }
+</script>

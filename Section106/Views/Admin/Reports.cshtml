@@ -1,0 +1,134 @@
+﻿@using Section106.Models.Models
+@using Section106.Models.Enums
+@model List<RequestVM>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Content/daterangepicker.css" rel="stylesheet" />
+@*<script  src="~/Scripts/moment.js"></script>*@
+
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <div class="dashboard-title">
+            <h3>Reports</h3>
+        </div>
+    </div>
+</div>
+
+@*<div class="row margin-top30 form-horizontal">
+        <div class="col-md-12 text-center">
+            <h2>Not impelemented yet...</h2>
+        </div>
+    </div>*@
+
+<div class="row">
+    <div class="col-md-3">
+
+        <input type="text" id="config-demo" class="form-control">
+        @{
+
+            var defaultDate = DateTime.Now.Date.AddDays(-10) + "," + DateTime.Now.Date;
+        }
+        <input type="hidden" class="form-control" id="defaultDate" name="defaultDate" value="@defaultDate" />
+        @*<i class="glyphicon glyphicon-calendar fa fa-calendar"></i>*@
+
+    </div>
+    <div class="col-md-3">
+        <a class="btn btn-info" href="javascript:void(0)" onclick="PrintPDF()">Projects Report</a>
+        <a id="Url" style="display:none" href="">Projects Report</a>
+    </div>
+</div>
+
+<div class="row margin-top30 form-horizontal">
+    <div class="col-md-12">
+        <div class="section-col-box">
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="myTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Request</th>
+                                    <th>Eligible</th>
+                                    <th>In Eligible</th>
+                                    <th>Unknown</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    function PrintPDF() {
+        debugger
+        var date = $("#defaultDate").val();
+        document.getElementById("Url").href = "/Admin/GenerateAdminReportPdf?date=" + date;
+        $("#Url")[0].click();
+        //$.ajax({
+        //    method: "post",
+        //    url: "/Admin/GenerateAdminReportPdf",
+        //    data: {date:date},
+        //    success: function () {
+
+        //    }
+        //})
+        
+    }
+
+    var ReportTable;
+    $(document).ready(function () {
+        var options = {};
+        options.startDate = "@DateTime.Now.Date.AddDays(-10)";
+        options.endDate = "@DateTime.Now.Date";
+        $('#config-demo').daterangepicker(options, function (start, end, label) {
+            // console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+            $('#defaultDate').val(start.format('YYYY-MM-DD') + ',' + end.format('YYYY-MM-DD'));
+
+            ReportTable.draw();
+        });
+        ReportTable= $('#myTable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "filter": false,
+            "orderMulti": false,
+            "ajax": {
+                //"url": "/Admin/GetReviewers",
+           
+                "url": "@Url.Action("GetReportData", "Admin")",
+                "type": "Post",
+                "datatype": "json",
+                "data": function (d) {
+                    var filterDate = $('#defaultDate').val();
+                    d.filterDate = filterDate;
+
+                }
+            },
+            "columns": [
+                 { "data": "Request", "name": "Request", "orderable": false },
+                { "data": "EligibleProperties", "name": "EligibleProperties", "orderable": false },
+                { "data": "InEligibleProperties", "name": "InEligibleProperties", "orderable": false },
+                { "data": "Unknown", "name": "Unknown", "orderable": false },
+            ],
+           
+        });
+
+    });
+ 
+    function printForm() {
+        window.print()
+    }
+</script>
+

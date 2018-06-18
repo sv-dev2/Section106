@@ -1,0 +1,17 @@
+﻿Time: 08/03/2018 12:24:49 PM
+55
+
+Time: 08/03/2018 12:24:50 PM
+55
+after  getting data
+Time: 08/03/2018 12:24:50 PM
+55
+going to return
+Time: 08/03/2018 12:25:13 PM
+in view
+False
+3
+Time: 08/03/2018 12:27:23 PM
+
+True
+12

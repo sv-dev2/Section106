@@ -1,0 +1,76 @@
+﻿@model Section106.Models.Models.AgencyVM
+@using Section106.Models
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <div class="dashboard-title">
+            <h3>New Agency</h3>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 text-left">
+        <a class="btn btn-default" href="~/Admin/Agency">Back To List</a>
+    </div>
+    <div class="col-md-6 text-right">
+    </div>
+</div>
+
+<div class="row margin-top30 form-horizontal">
+    <div class="col-md-12">
+        @using (Html.BeginForm("SaveAgency", "Admin", FormMethod.Post, new { role = "form" }))
+            {
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="section-col-box-noheight">
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(m => m.AgencyTypeId) <span class="text-danger">*</span>
+                                            @Html.DropDownListFor(m => m.AgencyTypeId, new SelectList(Model.AgencyTypeList, "Value", "Text"), "Select Agency Type", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.AgencyTypeId, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(m => m.Name) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @Html.LabelFor(m => m.Number) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Number, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Number, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9">
+                </div>
+                <div class="col-md-3 text-right">
+                    <a href="@Url.Action("Agency", "Admin")" class="btn btn-default">Cancel</a>
+                    <button type="submit" class="btn btn-info">Save</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<style type="text/css">
+    .control-label {
+        text-align: left !important;
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>

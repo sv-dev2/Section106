@@ -1,0 +1,266 @@
+﻿@using Section106.Models.Models
+@using Section106.Models.Enums
+@model List<RequestVM>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="dashboard-title">
+            <h3>User Request Dashboard</h3>
+        </div>
+    </div>
+</div>
+
+@*<div class="row">
+    <div class="col-md-12 text-right">
+        <a class="btn btn-info" href="~/Submitter/Create">New Request</a>
+    </div>
+</div>*@
+
+<div class="row margin-top30 form-horizontal">
+    <div class="col-md-12">
+        <div class="section-col-box">
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="myTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Project Number</th>
+                                    <th>Request Name</th>
+                                    <th>Submittal Date</th>
+                                    <th>Status</th>
+                                    <th style="display:none">RequestID</th>
+                                    @*<th>Agency</th>
+                                    <th class="action_200">Status</th>
+                                    <th>Remaining Days</th>*@
+                                    @*<th class="action_100">Action</th>*@
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        debugger;
+        $('#myTable').DataTable({            
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "searching": false,
+
+            "ajax": {
+                //"url": "/Submitter/GetUserRequests",
+                "url": '@Url.Action("GetUserRequests", "Submitter")',
+                "type": "Get",
+                "datatype": "json"
+            },
+            "columns": [
+                 { "data": "ProjectLogNumber", "name": "ProjectLogNumber", "orderable": false },
+                { "data": "ProjectName", "name": "ProjectName", "orderable": false },
+                { "data": "ProjectDate", "name": "ProjectDate", "orderable": false },
+                //{ "data": "AgencyName", "name": "AgencyName", "orderable": false },
+                { "data": "StatusStr", "name": "StatusStr", "orderable": false },
+                //{ "data": "RemainingDays", "name": "RemainingDays", "orderable": false },
+                { "data": "RequestId", "name": "RequestId", "orderable": false },
+            ],
+           
+            "columnDefs": [
+               
+                    @*{
+                        "targets": 3,
+                        "data": "download_link",
+                        "render": function (data, type, full, meta) {
+                            if (full.Status == (@(Convert.ToInt32(PublicStatus.Saved)))) {
+                                return '<a href="/Submitter/Edit?RequestId=' + data + '" title="Edit" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>  <button onclick="deleteRequest('+data+')" title="Delete" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.Submitted)))) {
+                                return '<span class="label label-info padd_6">Waiting for response</span>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.Returned)))) {
+                                return '<a href=/Submitter/Edit?RequestId=' + data + ' title="ReSubmit" class="btn btn-primary btn-xs">Review & Re-Submit</a>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.Rejected)))) {
+                                return '<a href=/Submitter/View?RequestId=' + data + ' title="View Request" class="btn btn-default btn-xs"><i class="fa fa-eye"> View Request</i></a>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.Completed)))) {
+                                return '<a href=/Submitter/View?RequestId=' + data + ' title="View Request" class="btn btn-default btn-xs"><i class="fa fa-eye"> View Request</i></a>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.UnderArchaeologyReview))) ||
+                                full.Status == (@(Convert.ToInt32(PublicStatus.UnderArchitectureReview))) ||
+                                full.Status == (@(Convert.ToInt32(PublicStatus.UnderTechnicalReview)))) {
+                                return '<span class="label label-info padd_6">Under Review</span>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.Hold)))) {
+                                return '<span class="label label-info padd_6">Hold</span>'
+                            }
+                            else if (full.Status == (@(Convert.ToInt32(PublicStatus.Final)))) {
+                                return '<span class="label label-success padd_6">Final</span>'
+                            }
+                        }
+                    },*@
+                     {
+                         "targets": 2,
+                         "createdCell":  function (td, cellData, rowData, row, col) {
+                             debugger;
+                             $(td).attr('reqid', rowData.RequestId); 
+                         },
+                         "render": function (data, type, full, meta) {
+                             if (data != null) {
+                                 var dateString = data.substr(6);
+                                 var currentTime = new Date(parseInt(dateString));
+                                 var month = currentTime.getMonth() + 1;
+                                 var day = currentTime.getDate();
+                                 var year = currentTime.getFullYear();
+                                 var date = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
+                                 return date;
+                             }
+                             return null;
+                         }
+                     },
+                     {
+                         "targets": 4,
+                         className: "my_class",
+                         "visible":false
+                     }
+                     @*{
+                         "targets": 5,
+                         "render": function (data, type, full, meta) {
+
+                             if(full.Status==(@(Convert.ToInt32(PublicStatus.Completed))))
+                             {
+                                 return '<span class="label label-success padd_6">Request Completed</span>'
+                             }
+                             else if(full.Status==(@(Convert.ToInt32(PublicStatus.Rejected))))
+                             {
+                                 return '<span class="label label-danger padd_6">Request Rejected</span>'
+                             }
+
+                             else{
+                                 if (full.Status == (@(Convert.ToInt32(PublicStatus.Saved)))) {
+                                     return '<span class="label label-default padd_6">Request not submitted</span>'
+                                 }
+                                 else{
+                                     if (full.RemainingDays < 0) {
+                                         return '<span class="label label-default padd_6">No Response</span>'
+                                     }
+                                     else if (full.RemainingDays <= 5) {
+                                         return '<span class="label label-danger padd_6">'+full.RemainingDays+' Days Remaining</span>'
+                                     }
+                                     else if (full.RemainingDays > 5 && full.RemainingDays <= 10) {
+                                         return '<span class="label label-warning padd_6">'+full.RemainingDays+' Days Remaining</span>'
+                                     }
+                                     else {
+                                         return '<span class="label label-primary padd_6">'+full.RemainingDays+' Days Remaining</span>'
+                                     }
+                                 }
+
+                             }
+                         }
+                     }*@
+            ],
+            "createdRow": function (row, data, index) {
+                if (data.Status == (@(Convert.ToInt32(PublicStatus.Returned)))) {
+                    $('td', row).addClass('req_warning');
+                }
+                else if (data.Status == (@(Convert.ToInt32(PublicStatus.Rejected)))) {
+                    $('td', row).addClass('req_danger');
+                }
+                else if (data.Status == (@(Convert.ToInt32(PublicStatus.Completed)))) {
+                    $('td', row).addClass('req_success');
+                }
+            },
+            'order': [[1, 'asc']]
+        });
+
+    });
+   
+    function deleteRequest(requestId) {
+
+        //bootbox.confirm({
+        //    message: "Are you sure you want to delete this attachment?",
+        //    title: "Delete Attachment",
+        //    buttons: {
+        //        confirm: {
+        //            label: '<i class="fa fa-check"></i> Yes',
+        //            className: 'btn-success'
+        //        },
+        //        cancel: {
+        //            label: '<i class="fa fa-times"></i> No',
+        //            className: 'btn-danger'
+        //        }
+        //    },
+        //    callback: function (result) {
+        //        if (result) {
+
+        //        }
+        //    }
+        //})
+
+        bootbox.confirm({
+            message: "Are you sure you want to delete this request?",
+            title: "Delete Request",
+            buttons: {
+                confirm: {
+                    label: '<i class="fa fa-check"></i> Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: '<i class="fa fa-times"></i> No',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+
+                    $.ajax({
+                        //url:'/Submitter/Delete',
+                        url:'@Url.Action("Delete", "Submitter")',
+                        type:'Get',
+                        data:{ RequestId : requestId },
+                        success:function (res) {
+                            if (res) {
+                                toastr.success("Request deleted successfully.");
+                                setTimeout(function(){
+                                    window.location.reload();
+                                }, 1000);
+                            }
+                            else{
+                                toastr.error("Request not deleted.");
+                            }
+                        }
+                    })
+
+                }
+            }
+        })
+
+
+    }
+    $( document ).on("click", "tr[role='row']", function(data){
+        debugger;
+        var RequestId=$(this).children().eq(2).attr("reqid");
+        var url = "/Submitter/Edit?RequestId=" + RequestId; 
+        window.location.href = url; 
+        
+    });
+   
+</script>
+<style>
+    table.dataTable tbody tr {
+    cursor: pointer;
+}
+</style>

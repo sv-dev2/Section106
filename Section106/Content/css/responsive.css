@@ -1,0 +1,59 @@
+
+
+
+@media(min-width:0px) and (max-width:767px){
+	.section-col-box {min-height: auto;margin-bottom: 30px;}
+.manage-acc .table-box {
+    padding: 15px;
+}
+.table-box{
+display:inline-block;}
+.table-box .pagination {
+    margin: 10px 0 10px;
+}
+.top-header .list-inline {
+    margin-left: 10px;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) 
+and (orientation : portrait) {
+	.top-header li:last-child {
+    float: left!important;
+}
+.table-top-space .pagination.pull-right {
+    float: left!important;
+}
+}
+
+
+
+
+
+
+
+@media only screen 
+and (min-device-width : 414px) 
+and (max-device-width : 736px) 
+and (orientation : portrait) {
+	.top-header li:last-child {
+    float: left!important;
+}
+.table-top-space .pagination.pull-right {
+    float: left!important;
+}
+}

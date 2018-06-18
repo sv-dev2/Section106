@@ -1,0 +1,12 @@
+,,,,,,Date Batch was created:,12/21/2017
+Company Name:,INTAC Solutions Inc.,,,,,Batch Start Date:,12/21/2017
+Company Address:,7500 Hanover Pkwy,,,,,Batch End Date:,12/21/2017
+NPI Number:,1285053538,,,,,Batch Total:,$950
+
+Encounter ID,Client First Name,Client Last Name,Client Address,City,State,Zip,Insurance ID,Date Of Service,Payor,CPT Code,Charges,Clinician
+1000000000343,Reet,Reet,12 aks tower,SCHENECTADY,NY,12345,4345334,12/21/2017,KBS Tech,90791,150,Thomas Green
+1000000000345,Reet,Reet,12 aks tower,SCHENECTADY,NY,12345,4345334,12/21/2017,KBS Tech,90791,150,maan singh
+1000000000344,Reet,Reet,12 aks tower,SCHENECTADY,NY,12345,4345334,12/21/2017,KBS Tech,90791,150,Clarissa Ellis
+1000000000346,Reet,Reet,12 aks tower,SCHENECTADY,NY,12345,4345334,12/21/2017,KBS Tech,90792,250,Thomas Green
+1000000000349,Reet,Reet,12 aks tower,SCHENECTADY,NY,12345,4345334,12/21/2017,KBS Tech,90792,250,maan singh
+1000000000347,Reet,Reet,12 aks tower,SCHENECTADY,NY,12345,4345334,12/21/2017,KBS Tech,99212 & 90836,0,Thomas Green

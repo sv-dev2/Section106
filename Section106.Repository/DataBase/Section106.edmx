@@ -1,0 +1,1670 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Section106Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Agency">
+          <Key>
+            <PropertyRef Name="AgencyId" />
+          </Key>
+          <Property Name="AgencyId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AgencyTypeId" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AgencyType">
+          <Key>
+            <PropertyRef Name="AgencyTypeId" />
+          </Key>
+          <Property Name="AgencyTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="ApplicantId" />
+          </Key>
+          <Property Name="ApplicantId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Company" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="200" />
+          <Property Name="StateId" Type="int" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="10" />
+          <Property Name="MobilePhone" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="OfficePhone" Type="nvarchar" MaxLength="10" />
+          <Property Name="Email" Type="nvarchar" MaxLength="254" Nullable="false" />
+          <Property Name="CountyId" Type="int" />
+        </EntityType>
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Attachment">
+          <Key>
+            <PropertyRef Name="AttachmentId" />
+          </Key>
+          <Property Name="AttachmentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestId" Type="bigint" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Comments" Type="nvarchar" MaxLength="500" Nullable="false" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StateId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Clock">
+          <Key>
+            <PropertyRef Name="ClockId" />
+          </Key>
+          <Property Name="ClockId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestId" Type="bigint" Nullable="false" />
+          <Property Name="ClockDate" Type="datetime" />
+          <Property Name="ClockStatus" Type="smallint" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="200" />
+          <Property Name="RemainingDays" Type="int" />
+          <Property Name="InternalClockDate" Type="datetime" />
+          <Property Name="InternalClockStatus" Type="smallint" />
+          <Property Name="InternalRemainingDays" Type="int" />
+        </EntityType>
+        <EntityType Name="Correspondence">
+          <Key>
+            <PropertyRef Name="CorrespondenceId" />
+          </Key>
+          <Property Name="CorrespondenceId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CorrespondenceTypeId" Type="bigint" Nullable="false" />
+          <Property Name="RequestId" Type="bigint" Nullable="false" />
+          <Property Name="Body" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CorrespondenceType">
+          <Key>
+            <PropertyRef Name="CorrespondenceTypeId" />
+          </Key>
+          <Property Name="CorrespondenceTypeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Template" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="County">
+          <Key>
+            <PropertyRef Name="CountyId" />
+          </Key>
+          <Property Name="CountyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Entity">
+          <Key>
+            <PropertyRef Name="EntityId" />
+          </Key>
+          <Property Name="EntityId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Company" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="200" />
+          <Property Name="StateId" Type="int" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+          <Property Name="Fax" Type="nvarchar" MaxLength="10" />
+          <Property Name="MobilePhone" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="OfficePhone" Type="nvarchar" MaxLength="10" />
+          <Property Name="ContactedBy" Type="int" />
+          <Property Name="CountyId" Type="int" />
+        </EntityType>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ApplicantContactId" Type="bigint" Nullable="false" />
+          <Property Name="IsApplicantSameAsSubmitting" Type="bit" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="LogNumber" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Date" Type="datetime" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="200" />
+          <Property Name="CountyId" Type="int" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+          <Property Name="LongitudeDD" Type="decimal" Precision="12" Scale="9" />
+          <Property Name="LatitudeDD" Type="decimal" Precision="12" Scale="9" />
+          <Property Name="Township" Type="nvarchar" MaxLength="50" />
+          <Property Name="Range" Type="nvarchar" MaxLength="50" />
+          <Property Name="Section" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsFederalProperty" Type="bit" />
+          <Property Name="IsStateProperty" Type="bit" />
+          <Property Name="IsMunicipalProperty" Type="bit" />
+          <Property Name="IsPrivateProperty" Type="bit" />
+          <Property Name="AgencyId" Type="bigint" Nullable="false" />
+          <Property Name="AgencyProjectNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsConstructionExcavation" Type="bit" />
+          <Property Name="IsRehabilitation" Type="bit" />
+          <Property Name="IsDemolition" Type="bit" />
+          <Property Name="IsSaleOrTransfer" Type="bit" />
+          <Property Name="IsNonConstructionLoan" Type="bit" />
+          <Property Name="IsOther" Type="bit" />
+          <Property Name="OtherDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="TotalProjectArea" Type="int" />
+          <Property Name="TotalGroundDisturbance" Type="int" />
+          <Property Name="IsOldStructure" Type="bit" />
+          <Property Name="IsHistoricOrGovtProperty" Type="smallint" />
+          <Property Name="HistoricPropertyName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsDocumentSentViaEmail" Type="bit" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsMississippiLandmarks" Type="bit" />
+          <Property Name="IsProjectCompleted" Type="bit" />
+          <Property Name="ProjectCompleteddate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="RequestAssignment">
+          <Key>
+            <PropertyRef Name="RequestAssignmentId" />
+          </Key>
+          <Property Name="RequestAssignmentId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestId" Type="bigint" Nullable="false" />
+          <Property Name="FederalOrState" Type="smallint" />
+          <Property Name="ProjectNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="RespondDate" Type="datetime" />
+          <Property Name="IsAssignToArchitect" Type="bit" Nullable="false" />
+          <Property Name="IsAssignToArchaelogical" Type="bit" Nullable="false" />
+          <Property Name="IsAssignToTechnical" Type="bit" Nullable="false" />
+          <Property Name="ArchitechStatus" Type="int" />
+          <Property Name="ArchaelogicalStatus" Type="int" />
+          <Property Name="TechnicalStatus" Type="int" />
+          <Property Name="IsAssignToLandMarks" Type="bit" Nullable="false" />
+          <Property Name="LandMarksStatus" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RequestResponse">
+          <Key>
+            <PropertyRef Name="RequestResponseId" />
+          </Key>
+          <Property Name="RequestResponseId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RequestId" Type="bigint" Nullable="false" />
+          <Property Name="RequestAssignmentId" Type="bigint" Nullable="false" />
+          <Property Name="IsNoHistoricProperty" Type="bit" />
+          <Property Name="IsHistoricProperty" Type="bit" />
+          <Property Name="ArchitectResponse" Type="smallint" />
+          <Property Name="ArchitectComment" Type="nvarchar" MaxLength="500" />
+          <Property Name="ArchitectUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsSurveyRequired" Type="bit" />
+          <Property Name="IsMoreInfoRequired" Type="bit" />
+          <Property Name="IsArchaeologyNoHistoricProperty" Type="bit" />
+          <Property Name="IsArchaeologyHistoricProperty" Type="bit" />
+          <Property Name="IsArchaeologyNoEffect" Type="bit" />
+          <Property Name="IsArchaeologyNoAdverseEffect" Type="bit" />
+          <Property Name="IsArchaeologyAdverseEffect" Type="bit" />
+          <Property Name="ArchaelogicalResponse" Type="smallint" />
+          <Property Name="ArchaelogicalComment" Type="nvarchar" MaxLength="500" />
+          <Property Name="ArchaelogicalUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsTechnicalNoEffect" Type="bit" />
+          <Property Name="IsTechnicalNoAdverseEffect" Type="bit" />
+          <Property Name="IsTechnicalAdverseEffect" Type="bit" />
+          <Property Name="TechnicalResponse" Type="smallint" />
+          <Property Name="TechnicalComment" Type="nvarchar" MaxLength="500" />
+          <Property Name="TechnicalUserId" Type="nvarchar" MaxLength="128" />
+          <Property Name="ArchaelogicalEligibleProperties" Type="int" />
+          <Property Name="ArchaelogicalInEligibleProperties" Type="int" />
+          <Property Name="ArchaelogicalUnknownProperties" Type="int" />
+          <Property Name="ArchitectEligibleProperties" Type="int" />
+          <Property Name="ArchitectInEligibleProperties" Type="int" />
+          <Property Name="ArchitectUnknownProperties" Type="int" />
+          <Property Name="LankMarksResponse" Type="smallint" />
+          <Property Name="LankMarksComment" Type="nvarchar" MaxLength="500" />
+          <Property Name="LankMarksUserId" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="StateId" />
+          </Key>
+          <Property Name="StateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Abbr" Type="nvarchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Agency_AgencyType">
+          <End Role="AgencyType" Type="Self.AgencyType" Multiplicity="1" />
+          <End Role="Agency" Type="Self.Agency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgencyType">
+              <PropertyRef Name="AgencyTypeId" />
+            </Principal>
+            <Dependent Role="Agency">
+              <PropertyRef Name="AgencyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicant_County">
+          <End Role="County" Type="Self.County" Multiplicity="0..1" />
+          <End Role="Applicant" Type="Self.Applicant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyId" />
+            </Principal>
+            <Dependent Role="Applicant">
+              <PropertyRef Name="CountyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicant_State">
+          <End Role="State" Type="Self.State" Multiplicity="1" />
+          <End Role="Applicant" Type="Self.Applicant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="Applicant">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attachment_Request">
+          <End Role="Request" Type="Self.Request" Multiplicity="1" />
+          <End Role="Attachment" Type="Self.Attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="Attachment">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_City_State">
+          <End Role="State" Type="Self.State" Multiplicity="1" />
+          <End Role="City" Type="Self.City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Clock_Request">
+          <End Role="Request" Type="Self.Request" Multiplicity="1" />
+          <End Role="Clock" Type="Self.Clock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="Clock">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Correspondence_CorrespondenceType">
+          <End Role="CorrespondenceType" Type="Self.CorrespondenceType" Multiplicity="1" />
+          <End Role="Correspondence" Type="Self.Correspondence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorrespondenceType">
+              <PropertyRef Name="CorrespondenceTypeId" />
+            </Principal>
+            <Dependent Role="Correspondence">
+              <PropertyRef Name="CorrespondenceTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Correspondence_Request">
+          <End Role="Request" Type="Self.Request" Multiplicity="1" />
+          <End Role="Correspondence" Type="Self.Correspondence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="Correspondence">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Entity_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Entity" Type="Self.Entity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Entity">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Entity_County">
+          <End Role="County" Type="Self.County" Multiplicity="0..1" />
+          <End Role="Entity" Type="Self.Entity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyId" />
+            </Principal>
+            <Dependent Role="Entity">
+              <PropertyRef Name="CountyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Entity_State">
+          <End Role="State" Type="Self.State" Multiplicity="1" />
+          <End Role="Entity" Type="Self.Entity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="Entity">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Request_Agency">
+          <End Role="Agency" Type="Self.Agency" Multiplicity="1" />
+          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agency">
+              <PropertyRef Name="AgencyId" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="AgencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Request_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Request_County">
+          <End Role="County" Type="Self.County" Multiplicity="0..1" />
+          <End Role="Request" Type="Self.Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyId" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="CountyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestAssignment_Request">
+          <End Role="Request" Type="Self.Request" Multiplicity="1" />
+          <End Role="RequestAssignment" Type="Self.RequestAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="RequestAssignment">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestResponse_Request">
+          <End Role="Request" Type="Self.Request" Multiplicity="1" />
+          <End Role="RequestResponse" Type="Self.RequestResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="RequestResponse">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestResponse_RequestAssignment">
+          <End Role="RequestAssignment" Type="Self.RequestAssignment" Multiplicity="1" />
+          <End Role="RequestResponse" Type="Self.RequestResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestAssignment">
+              <PropertyRef Name="RequestAssignmentId" />
+            </Principal>
+            <Dependent Role="RequestResponse">
+              <PropertyRef Name="RequestAssignmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="GetSubmitterRequestsByStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="StatusList" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="UserId" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <EntityContainer Name="Section106ModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Agency" EntityType="Self.Agency" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AgencyType" EntityType="Self.AgencyType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Applicant" EntityType="Self.Applicant" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Attachment" EntityType="Self.Attachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clock" EntityType="Self.Clock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Correspondence" EntityType="Self.Correspondence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorrespondenceType" EntityType="Self.CorrespondenceType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="County" EntityType="Self.County" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Entity" EntityType="Self.Entity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Request" EntityType="Self.Request" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestAssignment" EntityType="Self.RequestAssignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RequestResponse" EntityType="Self.RequestResponse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="State" EntityType="Self.State" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Agency_AgencyType" Association="Self.FK_Agency_AgencyType">
+            <End Role="AgencyType" EntitySet="AgencyType" />
+            <End Role="Agency" EntitySet="Agency" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicant_County" Association="Self.FK_Applicant_County">
+            <End Role="County" EntitySet="County" />
+            <End Role="Applicant" EntitySet="Applicant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicant_State" Association="Self.FK_Applicant_State">
+            <End Role="State" EntitySet="State" />
+            <End Role="Applicant" EntitySet="Applicant" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attachment_Request" Association="Self.FK_Attachment_Request">
+            <End Role="Request" EntitySet="Request" />
+            <End Role="Attachment" EntitySet="Attachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_City_State" Association="Self.FK_City_State">
+            <End Role="State" EntitySet="State" />
+            <End Role="City" EntitySet="City" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Clock_Request" Association="Self.FK_Clock_Request">
+            <End Role="Request" EntitySet="Request" />
+            <End Role="Clock" EntitySet="Clock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correspondence_CorrespondenceType" Association="Self.FK_Correspondence_CorrespondenceType">
+            <End Role="CorrespondenceType" EntitySet="CorrespondenceType" />
+            <End Role="Correspondence" EntitySet="Correspondence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correspondence_Request" Association="Self.FK_Correspondence_Request">
+            <End Role="Request" EntitySet="Request" />
+            <End Role="Correspondence" EntitySet="Correspondence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Entity_AspNetUsers" Association="Self.FK_Entity_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Entity" EntitySet="Entity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Entity_County" Association="Self.FK_Entity_County">
+            <End Role="County" EntitySet="County" />
+            <End Role="Entity" EntitySet="Entity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Entity_State" Association="Self.FK_Entity_State">
+            <End Role="State" EntitySet="State" />
+            <End Role="Entity" EntitySet="Entity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_Agency" Association="Self.FK_Request_Agency">
+            <End Role="Agency" EntitySet="Agency" />
+            <End Role="Request" EntitySet="Request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_AspNetUsers" Association="Self.FK_Request_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Request" EntitySet="Request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_County" Association="Self.FK_Request_County">
+            <End Role="County" EntitySet="County" />
+            <End Role="Request" EntitySet="Request" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestAssignment_Request" Association="Self.FK_RequestAssignment_Request">
+            <End Role="Request" EntitySet="Request" />
+            <End Role="RequestAssignment" EntitySet="RequestAssignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestResponse_Request" Association="Self.FK_RequestResponse_Request">
+            <End Role="Request" EntitySet="Request" />
+            <End Role="RequestResponse" EntitySet="RequestResponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestResponse_RequestAssignment" Association="Self.FK_RequestResponse_RequestAssignment">
+            <End Role="RequestAssignment" EntitySet="RequestAssignment" />
+            <End Role="RequestResponse" EntitySet="RequestResponse" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Section106Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Agency">
+          <Key>
+            <PropertyRef Name="AgencyId" />
+          </Key>
+          <Property Name="AgencyId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AgencyTypeId" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Number" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AgencyType" Relationship="Self.FK_Agency_AgencyType" FromRole="Agency" ToRole="AgencyType" />
+          <NavigationProperty Name="Requests" Relationship="Section106Model.FK_Request_Agency" FromRole="Agency" ToRole="Request" />
+        </EntityType>
+        <EntityType Name="AgencyType">
+          <Key>
+            <PropertyRef Name="AgencyTypeId" />
+          </Key>
+          <Property Name="AgencyTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Agencies" Relationship="Self.FK_Agency_AgencyType" FromRole="AgencyType" ToRole="Agency" />
+        </EntityType>
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserClaim">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+          <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Requests" Relationship="Section106Model.FK_Request_AspNetUsers" FromRole="AspNetUser" ToRole="Request" />
+          <NavigationProperty Name="Entities" Relationship="Section106Model.FK_Entity_AspNetUsers" FromRole="AspNetUser" ToRole="Entity" />
+        </EntityType>
+        <EntityType Name="Attachment">
+          <Key>
+            <PropertyRef Name="AttachmentId" />
+          </Key>
+          <Property Name="AttachmentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestId" Type="Int64" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Comments" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Request" Relationship="Section106Model.FK_Attachment_Request" FromRole="Attachment" ToRole="Request" />
+        </EntityType>
+        <EntityType Name="Clock">
+          <Key>
+            <PropertyRef Name="ClockId" />
+          </Key>
+          <Property Name="ClockId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestId" Type="Int64" Nullable="false" />
+          <Property Name="ClockDate" Type="DateTime" Precision="3" />
+          <Property Name="ClockStatus" Type="Int16" Nullable="false" />
+          <Property Name="Reason" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="RemainingDays" Type="Int32" />
+          <Property Name="InternalClockDate" Type="DateTime" Precision="3" />
+          <Property Name="InternalClockStatus" Type="Int16" />
+          <Property Name="InternalRemainingDays" Type="Int32" />
+          <NavigationProperty Name="Request" Relationship="Section106Model.FK_Clock_Request" FromRole="Clock" ToRole="Request" />
+        </EntityType>
+        <EntityType Name="Correspondence">
+          <Key>
+            <PropertyRef Name="CorrespondenceId" />
+          </Key>
+          <Property Name="CorrespondenceId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CorrespondenceTypeId" Type="Int64" Nullable="false" />
+          <Property Name="RequestId" Type="Int64" Nullable="false" />
+          <Property Name="Body" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CorrespondenceType" Relationship="Self.FK_Correspondence_CorrespondenceType" FromRole="Correspondence" ToRole="CorrespondenceType" />
+          <NavigationProperty Name="Request" Relationship="Section106Model.FK_Correspondence_Request" FromRole="Correspondence" ToRole="Request" />
+        </EntityType>
+        <EntityType Name="CorrespondenceType">
+          <Key>
+            <PropertyRef Name="CorrespondenceTypeId" />
+          </Key>
+          <Property Name="CorrespondenceTypeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Template" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Correspondences" Relationship="Self.FK_Correspondence_CorrespondenceType" FromRole="CorrespondenceType" ToRole="Correspondence" />
+        </EntityType>
+        <EntityType Name="County">
+          <Key>
+            <PropertyRef Name="CountyId" />
+          </Key>
+          <Property Name="CountyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Requests" Relationship="Section106Model.FK_Request_County" FromRole="County" ToRole="Request" />
+          <NavigationProperty Name="Applicants" Relationship="Section106Model.FK_Applicant_County" FromRole="County" ToRole="Applicant" />
+          <NavigationProperty Name="Entities" Relationship="Section106Model.FK_Entity_County" FromRole="County" ToRole="Entity" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="StateId" />
+          </Key>
+          <Property Name="StateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Abbr" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Cities" Relationship="Section106Model.FK_City_State" FromRole="State" ToRole="City" />
+          <NavigationProperty Name="Applicants" Relationship="Section106Model.FK_Applicant_State" FromRole="State" ToRole="Applicant" />
+          <NavigationProperty Name="Entities" Relationship="Section106Model.FK_Entity_State" FromRole="State" ToRole="Entity" />
+        </EntityType>
+        <Association Name="FK_Agency_AgencyType">
+          <End Role="AgencyType" Type="Self.AgencyType" Multiplicity="1" />
+          <End Role="Agency" Type="Self.Agency" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AgencyType">
+              <PropertyRef Name="AgencyTypeId" />
+            </Principal>
+            <Dependent Role="Agency">
+              <PropertyRef Name="AgencyTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserClaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserLogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Correspondence_CorrespondenceType">
+          <End Role="CorrespondenceType" Type="Self.CorrespondenceType" Multiplicity="1" />
+          <End Role="Correspondence" Type="Self.Correspondence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorrespondenceType">
+              <PropertyRef Name="CorrespondenceTypeId" />
+            </Principal>
+            <Dependent Role="Correspondence">
+              <PropertyRef Name="CorrespondenceTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="Section106Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="Agencies" EntityType="Self.Agency" />
+          <EntitySet Name="AgencyTypes" EntityType="Self.AgencyType" />
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+          <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+          <EntitySet Name="Attachments" EntityType="Self.Attachment" />
+          <EntitySet Name="Clocks" EntityType="Self.Clock" />
+          <EntitySet Name="Correspondences" EntityType="Self.Correspondence" />
+          <EntitySet Name="CorrespondenceTypes" EntityType="Self.CorrespondenceType" />
+          <EntitySet Name="Counties" EntityType="Self.County" />
+          <EntitySet Name="States" EntityType="Self.State" />
+          <AssociationSet Name="FK_Agency_AgencyType" Association="Self.FK_Agency_AgencyType">
+            <End Role="AgencyType" EntitySet="AgencyTypes" />
+            <End Role="Agency" EntitySet="Agencies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correspondence_CorrespondenceType" Association="Self.FK_Correspondence_CorrespondenceType">
+            <End Role="CorrespondenceType" EntitySet="CorrespondenceTypes" />
+            <End Role="Correspondence" EntitySet="Correspondences" />
+          </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <FunctionImport Name="GetSubmitterRequestsByStatus" ReturnType="Collection(Section106Model.GetSubmitterRequestsByStatus_Result)">
+            <Parameter Name="StatusList" Mode="In" Type="String" />
+            <Parameter Name="UserId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Cities" EntityType="Section106Model.City" />
+          <AssociationSet Name="FK_City_State" Association="Section106Model.FK_City_State">
+            <End Role="State" EntitySet="States" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
+          <EntitySet Name="Requests" EntityType="Section106Model.Request" />
+          <AssociationSet Name="FK_Request_Agency" Association="Section106Model.FK_Request_Agency">
+            <End Role="Agency" EntitySet="Agencies" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_AspNetUsers" Association="Section106Model.FK_Request_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Attachment_Request" Association="Section106Model.FK_Attachment_Request">
+            <End Role="Request" EntitySet="Requests" />
+            <End Role="Attachment" EntitySet="Attachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Clock_Request" Association="Section106Model.FK_Clock_Request">
+            <End Role="Request" EntitySet="Requests" />
+            <End Role="Clock" EntitySet="Clocks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Correspondence_Request" Association="Section106Model.FK_Correspondence_Request">
+            <End Role="Request" EntitySet="Requests" />
+            <End Role="Correspondence" EntitySet="Correspondences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Request_County" Association="Section106Model.FK_Request_County">
+            <End Role="County" EntitySet="Counties" />
+            <End Role="Request" EntitySet="Requests" />
+          </AssociationSet>
+          <EntitySet Name="Applicants" EntityType="Section106Model.Applicant" />
+          <AssociationSet Name="FK_Applicant_County" Association="Section106Model.FK_Applicant_County">
+            <End Role="County" EntitySet="Counties" />
+            <End Role="Applicant" EntitySet="Applicants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Applicant_State" Association="Section106Model.FK_Applicant_State">
+            <End Role="State" EntitySet="States" />
+            <End Role="Applicant" EntitySet="Applicants" />
+          </AssociationSet>
+          <EntitySet Name="Entities" EntityType="Section106Model.Entity" />
+          <AssociationSet Name="FK_Entity_AspNetUsers" Association="Section106Model.FK_Entity_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Entity" EntitySet="Entities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Entity_County" Association="Section106Model.FK_Entity_County">
+            <End Role="County" EntitySet="Counties" />
+            <End Role="Entity" EntitySet="Entities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Entity_State" Association="Section106Model.FK_Entity_State">
+            <End Role="State" EntitySet="States" />
+            <End Role="Entity" EntitySet="Entities" />
+          </AssociationSet>
+          <EntitySet Name="RequestAssignments" EntityType="Section106Model.RequestAssignment" />
+          <AssociationSet Name="FK_RequestAssignment_Request" Association="Section106Model.FK_RequestAssignment_Request">
+            <End Role="Request" EntitySet="Requests" />
+            <End Role="RequestAssignment" EntitySet="RequestAssignments" />
+          </AssociationSet>
+          <EntitySet Name="RequestResponses" EntityType="Section106Model.RequestResponse" />
+          <AssociationSet Name="FK_RequestResponse_Request" Association="Section106Model.FK_RequestResponse_Request">
+            <End Role="Request" EntitySet="Requests" />
+            <End Role="RequestResponse" EntitySet="RequestResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RequestResponse_RequestAssignment" Association="Section106Model.FK_RequestResponse_RequestAssignment">
+            <End Role="RequestAssignment" EntitySet="RequestAssignments" />
+            <End Role="RequestResponse" EntitySet="RequestResponses" />
+          </AssociationSet>
+          </EntityContainer>
+        <ComplexType Name="GetSubmitterRequestsByStatus_Result">
+          <Property Type="Int64" Name="RequestId" Nullable="false" />
+          <Property Type="String" Name="UserId" Nullable="false" MaxLength="128" />
+          <Property Type="String" Name="LogNumber" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="Date" Nullable="true" Precision="23" />
+          <Property Type="Int64" Name="AgencyId" Nullable="false" />
+          <Property Type="Int32" Name="Status" Nullable="false" />
+          <Property Type="Int32" Name="RemainingDays" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="CityId" />
+          </Key>
+          <Property Name="CityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StateId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="State" Relationship="Section106Model.FK_City_State" FromRole="City" ToRole="State" />
+        </EntityType>
+        <Association Name="FK_City_State">
+          <End Type="Section106Model.State" Role="State" Multiplicity="1" />
+          <End Type="Section106Model.City" Role="City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Request">
+          <Key>
+            <PropertyRef Name="RequestId" />
+          </Key>
+          <Property Name="RequestId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicantContactId" Type="Int64" Nullable="false" />
+          <Property Name="IsApplicantSameAsSubmitting" Type="Boolean" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LogNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date" Type="DateTime" Precision="3" />
+          <Property Name="Address1" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="CountyId" Type="Int32" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="Zip" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="LongitudeDD" Type="Decimal" Precision="12" Scale="9" />
+          <Property Name="LatitudeDD" Type="Decimal" Precision="12" Scale="9" />
+          <Property Name="Township" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Range" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Section" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsFederalProperty" Type="Boolean" />
+          <Property Name="IsStateProperty" Type="Boolean" />
+          <Property Name="IsMunicipalProperty" Type="Boolean" />
+          <Property Name="IsPrivateProperty" Type="Boolean" />
+          <Property Name="AgencyId" Type="Int64" Nullable="false" />
+          <Property Name="AgencyProjectNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsConstructionExcavation" Type="Boolean" />
+          <Property Name="IsRehabilitation" Type="Boolean" />
+          <Property Name="IsDemolition" Type="Boolean" />
+          <Property Name="IsSaleOrTransfer" Type="Boolean" />
+          <Property Name="IsNonConstructionLoan" Type="Boolean" />
+          <Property Name="IsOther" Type="Boolean" />
+          <Property Name="OtherDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TotalProjectArea" Type="Int32" />
+          <Property Name="TotalGroundDisturbance" Type="Int32" />
+          <Property Name="IsOldStructure" Type="Boolean" />
+          <Property Name="IsHistoricOrGovtProperty" Type="Int16" />
+          <Property Name="HistoricPropertyName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsDocumentSentViaEmail" Type="Boolean" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsMississippiLandmarks" Type="Boolean" />
+          <NavigationProperty Name="Agency" Relationship="Section106Model.FK_Request_Agency" FromRole="Request" ToRole="Agency" />
+          <NavigationProperty Name="AspNetUser" Relationship="Section106Model.FK_Request_AspNetUsers" FromRole="Request" ToRole="AspNetUser" />
+          <NavigationProperty Name="Attachments" Relationship="Section106Model.FK_Attachment_Request" FromRole="Request" ToRole="Attachment" />
+          <NavigationProperty Name="Clocks" Relationship="Section106Model.FK_Clock_Request" FromRole="Request" ToRole="Clock" />
+          <NavigationProperty Name="Correspondences" Relationship="Section106Model.FK_Correspondence_Request" FromRole="Request" ToRole="Correspondence" />
+          <NavigationProperty Name="County" Relationship="Section106Model.FK_Request_County" FromRole="Request" ToRole="County" />
+          <Property Name="IsProjectCompleted" Type="Boolean" />
+          <Property Name="ProjectCompleteddate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="RequestAssignments" Relationship="Section106Model.FK_RequestAssignment_Request" FromRole="Request" ToRole="RequestAssignment" />
+          <NavigationProperty Name="RequestResponses" Relationship="Section106Model.FK_RequestResponse_Request" FromRole="Request" ToRole="RequestResponse" />
+        </EntityType>
+        <Association Name="FK_Request_Agency">
+          <End Type="Section106Model.Agency" Role="Agency" Multiplicity="1" />
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Agency">
+              <PropertyRef Name="AgencyId" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="AgencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Request_AspNetUsers">
+          <End Type="Section106Model.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Attachment_Request">
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="1" />
+          <End Type="Section106Model.Attachment" Role="Attachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="Attachment">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Clock_Request">
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="1" />
+          <End Type="Section106Model.Clock" Role="Clock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="Clock">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Correspondence_Request">
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="1" />
+          <End Type="Section106Model.Correspondence" Role="Correspondence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="Correspondence">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Request_County">
+          <End Type="Section106Model.County" Role="County" Multiplicity="0..1" />
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyId" />
+            </Principal>
+            <Dependent Role="Request">
+              <PropertyRef Name="CountyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="ApplicantId" />
+          </Key>
+          <Property Name="ApplicantId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="StateId" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MobilePhone" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OfficePhone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="254" FixedLength="false" Unicode="true" />
+          <Property Name="CountyId" Type="Int32" />
+          <NavigationProperty Name="County" Relationship="Section106Model.FK_Applicant_County" FromRole="Applicant" ToRole="County" />
+          <NavigationProperty Name="State" Relationship="Section106Model.FK_Applicant_State" FromRole="Applicant" ToRole="State" />
+        </EntityType>
+        <Association Name="FK_Applicant_County">
+          <End Type="Section106Model.County" Role="County" Multiplicity="0..1" />
+          <End Type="Section106Model.Applicant" Role="Applicant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyId" />
+            </Principal>
+            <Dependent Role="Applicant">
+              <PropertyRef Name="CountyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Applicant_State">
+          <End Type="Section106Model.State" Role="State" Multiplicity="1" />
+          <End Type="Section106Model.Applicant" Role="Applicant" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="Applicant">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Entity">
+          <Key>
+            <PropertyRef Name="EntityId" />
+          </Key>
+          <Property Name="EntityId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Company" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="StateId" Type="Int32" Nullable="false" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MobilePhone" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OfficePhone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ContactedBy" Type="Int32" />
+          <Property Name="CountyId" Type="Int32" />
+          <NavigationProperty Name="AspNetUser" Relationship="Section106Model.FK_Entity_AspNetUsers" FromRole="Entity" ToRole="AspNetUser" />
+          <NavigationProperty Name="County" Relationship="Section106Model.FK_Entity_County" FromRole="Entity" ToRole="County" />
+          <NavigationProperty Name="State" Relationship="Section106Model.FK_Entity_State" FromRole="Entity" ToRole="State" />
+        </EntityType>
+        <Association Name="FK_Entity_AspNetUsers">
+          <End Type="Section106Model.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="Section106Model.Entity" Role="Entity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Entity">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Entity_County">
+          <End Type="Section106Model.County" Role="County" Multiplicity="0..1" />
+          <End Type="Section106Model.Entity" Role="Entity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="County">
+              <PropertyRef Name="CountyId" />
+            </Principal>
+            <Dependent Role="Entity">
+              <PropertyRef Name="CountyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Entity_State">
+          <End Type="Section106Model.State" Role="State" Multiplicity="1" />
+          <End Type="Section106Model.Entity" Role="Entity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="State">
+              <PropertyRef Name="StateId" />
+            </Principal>
+            <Dependent Role="Entity">
+              <PropertyRef Name="StateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RequestAssignment">
+          <Key>
+            <PropertyRef Name="RequestAssignmentId" />
+          </Key>
+          <Property Name="RequestAssignmentId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestId" Type="Int64" Nullable="false" />
+          <Property Name="FederalOrState" Type="Int16" />
+          <Property Name="ProjectNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RespondDate" Type="DateTime" Precision="3" />
+          <Property Name="IsAssignToArchitect" Type="Boolean" Nullable="false" />
+          <Property Name="IsAssignToArchaelogical" Type="Boolean" Nullable="false" />
+          <Property Name="IsAssignToTechnical" Type="Boolean" Nullable="false" />
+          <Property Name="ArchitechStatus" Type="Int32" />
+          <Property Name="ArchaelogicalStatus" Type="Int32" />
+          <Property Name="TechnicalStatus" Type="Int32" />
+          <Property Name="IsAssignToLandMarks" Type="Boolean" Nullable="false" />
+          <Property Name="LandMarksStatus" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Request" Relationship="Section106Model.FK_RequestAssignment_Request" FromRole="RequestAssignment" ToRole="Request" />
+          <NavigationProperty Name="RequestResponses" Relationship="Section106Model.FK_RequestResponse_RequestAssignment" FromRole="RequestAssignment" ToRole="RequestResponse" />
+        </EntityType>
+        <Association Name="FK_RequestAssignment_Request">
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="1" />
+          <End Type="Section106Model.RequestAssignment" Role="RequestAssignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="RequestAssignment">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RequestResponse">
+          <Key>
+            <PropertyRef Name="RequestResponseId" />
+          </Key>
+          <Property Name="RequestResponseId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RequestId" Type="Int64" Nullable="false" />
+          <Property Name="RequestAssignmentId" Type="Int64" Nullable="false" />
+          <Property Name="IsNoHistoricProperty" Type="Boolean" />
+          <Property Name="IsHistoricProperty" Type="Boolean" />
+          <Property Name="ArchitectResponse" Type="Int16" />
+          <Property Name="ArchitectComment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ArchitectUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsSurveyRequired" Type="Boolean" />
+          <Property Name="IsMoreInfoRequired" Type="Boolean" />
+          <Property Name="IsArchaeologyNoHistoricProperty" Type="Boolean" />
+          <Property Name="IsArchaeologyHistoricProperty" Type="Boolean" />
+          <Property Name="IsArchaeologyNoEffect" Type="Boolean" />
+          <Property Name="IsArchaeologyNoAdverseEffect" Type="Boolean" />
+          <Property Name="IsArchaeologyAdverseEffect" Type="Boolean" />
+          <Property Name="ArchaelogicalResponse" Type="Int16" />
+          <Property Name="ArchaelogicalComment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ArchaelogicalUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsTechnicalNoEffect" Type="Boolean" />
+          <Property Name="IsTechnicalNoAdverseEffect" Type="Boolean" />
+          <Property Name="IsTechnicalAdverseEffect" Type="Boolean" />
+          <Property Name="TechnicalResponse" Type="Int16" />
+          <Property Name="TechnicalComment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="TechnicalUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ArchaelogicalEligibleProperties" Type="Int32" />
+          <Property Name="ArchaelogicalInEligibleProperties" Type="Int32" />
+          <Property Name="ArchaelogicalUnknownProperties" Type="Int32" />
+          <Property Name="ArchitectEligibleProperties" Type="Int32" />
+          <Property Name="ArchitectInEligibleProperties" Type="Int32" />
+          <Property Name="ArchitectUnknownProperties" Type="Int32" />
+          <Property Name="LankMarksResponse" Type="Int16" />
+          <Property Name="LankMarksComment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="LankMarksUserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Request" Relationship="Section106Model.FK_RequestResponse_Request" FromRole="RequestResponse" ToRole="Request" />
+          <NavigationProperty Name="RequestAssignment" Relationship="Section106Model.FK_RequestResponse_RequestAssignment" FromRole="RequestResponse" ToRole="RequestAssignment" />
+        </EntityType>
+        <Association Name="FK_RequestResponse_Request">
+          <End Type="Section106Model.Request" Role="Request" Multiplicity="1" />
+          <End Type="Section106Model.RequestResponse" Role="RequestResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Request">
+              <PropertyRef Name="RequestId" />
+            </Principal>
+            <Dependent Role="RequestResponse">
+              <PropertyRef Name="RequestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RequestResponse_RequestAssignment">
+          <End Type="Section106Model.RequestAssignment" Role="RequestAssignment" Multiplicity="1" />
+          <End Type="Section106Model.RequestResponse" Role="RequestResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RequestAssignment">
+              <PropertyRef Name="RequestAssignmentId" />
+            </Principal>
+            <Dependent Role="RequestResponse">
+              <PropertyRef Name="RequestAssignmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Section106ModelStoreContainer" CdmEntityContainer="Section106Entities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="Section106Model.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Agencies">
+            <EntityTypeMapping TypeName="Section106Model.Agency">
+              <MappingFragment StoreEntitySet="Agency">
+                <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+                <ScalarProperty Name="AgencyTypeId" ColumnName="AgencyTypeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AgencyTypes">
+            <EntityTypeMapping TypeName="Section106Model.AgencyType">
+              <MappingFragment StoreEntitySet="AgencyType">
+                <ScalarProperty Name="AgencyTypeId" ColumnName="AgencyTypeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="Section106Model.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserClaims">
+            <EntityTypeMapping TypeName="Section106Model.AspNetUserClaim">
+              <MappingFragment StoreEntitySet="AspNetUserClaims">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUserLogins">
+            <EntityTypeMapping TypeName="Section106Model.AspNetUserLogin">
+              <MappingFragment StoreEntitySet="AspNetUserLogins">
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="Section106Model.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Attachments">
+            <EntityTypeMapping TypeName="Section106Model.Attachment">
+              <MappingFragment StoreEntitySet="Attachment">
+                <ScalarProperty Name="AttachmentId" ColumnName="AttachmentId" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Comments" ColumnName="Comments" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clocks">
+            <EntityTypeMapping TypeName="Section106Model.Clock">
+              <MappingFragment StoreEntitySet="Clock">
+                <ScalarProperty Name="ClockId" ColumnName="ClockId" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="ClockDate" ColumnName="ClockDate" />
+                <ScalarProperty Name="ClockStatus" ColumnName="ClockStatus" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="RemainingDays" ColumnName="RemainingDays" />
+                <ScalarProperty Name="InternalClockDate" ColumnName="InternalClockDate" />
+                <ScalarProperty Name="InternalClockStatus" ColumnName="InternalClockStatus" />
+                <ScalarProperty Name="InternalRemainingDays" ColumnName="InternalRemainingDays" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Correspondences">
+            <EntityTypeMapping TypeName="Section106Model.Correspondence">
+              <MappingFragment StoreEntitySet="Correspondence">
+                <ScalarProperty Name="CorrespondenceId" ColumnName="CorrespondenceId" />
+                <ScalarProperty Name="CorrespondenceTypeId" ColumnName="CorrespondenceTypeId" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CorrespondenceTypes">
+            <EntityTypeMapping TypeName="Section106Model.CorrespondenceType">
+              <MappingFragment StoreEntitySet="CorrespondenceType">
+                <ScalarProperty Name="CorrespondenceTypeId" ColumnName="CorrespondenceTypeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Template" ColumnName="Template" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Counties">
+            <EntityTypeMapping TypeName="Section106Model.County">
+              <MappingFragment StoreEntitySet="County">
+                <ScalarProperty Name="CountyId" ColumnName="CountyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="Section106Model.State">
+              <MappingFragment StoreEntitySet="State">
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Abbr" ColumnName="Abbr" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="Section106Model.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="GetSubmitterRequestsByStatus" FunctionName="Section106Model.Store.GetSubmitterRequestsByStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="Section106Model.GetSubmitterRequestsByStatus_Result">
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="LogNumber" ColumnName="LogNumber" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="RemainingDays" ColumnName="RemainingDays" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Cities">
+            <EntityTypeMapping TypeName="Section106Model.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Requests">
+            <EntityTypeMapping TypeName="Section106Model.Request">
+              <MappingFragment StoreEntitySet="Request">
+                <ScalarProperty Name="ProjectCompleteddate" ColumnName="ProjectCompleteddate" />
+                <ScalarProperty Name="IsProjectCompleted" ColumnName="IsProjectCompleted" />
+                <ScalarProperty Name="IsMississippiLandmarks" ColumnName="IsMississippiLandmarks" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsDocumentSentViaEmail" ColumnName="IsDocumentSentViaEmail" />
+                <ScalarProperty Name="HistoricPropertyName" ColumnName="HistoricPropertyName" />
+                <ScalarProperty Name="IsHistoricOrGovtProperty" ColumnName="IsHistoricOrGovtProperty" />
+                <ScalarProperty Name="IsOldStructure" ColumnName="IsOldStructure" />
+                <ScalarProperty Name="TotalGroundDisturbance" ColumnName="TotalGroundDisturbance" />
+                <ScalarProperty Name="TotalProjectArea" ColumnName="TotalProjectArea" />
+                <ScalarProperty Name="OtherDescription" ColumnName="OtherDescription" />
+                <ScalarProperty Name="IsOther" ColumnName="IsOther" />
+                <ScalarProperty Name="IsNonConstructionLoan" ColumnName="IsNonConstructionLoan" />
+                <ScalarProperty Name="IsSaleOrTransfer" ColumnName="IsSaleOrTransfer" />
+                <ScalarProperty Name="IsDemolition" ColumnName="IsDemolition" />
+                <ScalarProperty Name="IsRehabilitation" ColumnName="IsRehabilitation" />
+                <ScalarProperty Name="IsConstructionExcavation" ColumnName="IsConstructionExcavation" />
+                <ScalarProperty Name="AgencyProjectNumber" ColumnName="AgencyProjectNumber" />
+                <ScalarProperty Name="AgencyId" ColumnName="AgencyId" />
+                <ScalarProperty Name="IsPrivateProperty" ColumnName="IsPrivateProperty" />
+                <ScalarProperty Name="IsMunicipalProperty" ColumnName="IsMunicipalProperty" />
+                <ScalarProperty Name="IsStateProperty" ColumnName="IsStateProperty" />
+                <ScalarProperty Name="IsFederalProperty" ColumnName="IsFederalProperty" />
+                <ScalarProperty Name="Section" ColumnName="Section" />
+                <ScalarProperty Name="Range" ColumnName="Range" />
+                <ScalarProperty Name="Township" ColumnName="Township" />
+                <ScalarProperty Name="LatitudeDD" ColumnName="LatitudeDD" />
+                <ScalarProperty Name="LongitudeDD" ColumnName="LongitudeDD" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="CountyId" ColumnName="CountyId" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="LogNumber" ColumnName="LogNumber" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="IsApplicantSameAsSubmitting" ColumnName="IsApplicantSameAsSubmitting" />
+                <ScalarProperty Name="ApplicantContactId" ColumnName="ApplicantContactId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Applicants">
+            <EntityTypeMapping TypeName="Section106Model.Applicant">
+              <MappingFragment StoreEntitySet="Applicant">
+                <ScalarProperty Name="CountyId" ColumnName="CountyId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="OfficePhone" ColumnName="OfficePhone" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ApplicantId" ColumnName="ApplicantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Entities">
+            <EntityTypeMapping TypeName="Section106Model.Entity">
+              <MappingFragment StoreEntitySet="Entity">
+                <ScalarProperty Name="CountyId" ColumnName="CountyId" />
+                <ScalarProperty Name="ContactedBy" ColumnName="ContactedBy" />
+                <ScalarProperty Name="OfficePhone" ColumnName="OfficePhone" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Company" ColumnName="Company" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EntityId" ColumnName="EntityId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestAssignments">
+            <EntityTypeMapping TypeName="Section106Model.RequestAssignment">
+              <MappingFragment StoreEntitySet="RequestAssignment">
+                <ScalarProperty Name="LandMarksStatus" ColumnName="LandMarksStatus" />
+                <ScalarProperty Name="IsAssignToLandMarks" ColumnName="IsAssignToLandMarks" />
+                <ScalarProperty Name="TechnicalStatus" ColumnName="TechnicalStatus" />
+                <ScalarProperty Name="ArchaelogicalStatus" ColumnName="ArchaelogicalStatus" />
+                <ScalarProperty Name="ArchitechStatus" ColumnName="ArchitechStatus" />
+                <ScalarProperty Name="IsAssignToTechnical" ColumnName="IsAssignToTechnical" />
+                <ScalarProperty Name="IsAssignToArchaelogical" ColumnName="IsAssignToArchaelogical" />
+                <ScalarProperty Name="IsAssignToArchitect" ColumnName="IsAssignToArchitect" />
+                <ScalarProperty Name="RespondDate" ColumnName="RespondDate" />
+                <ScalarProperty Name="ProjectNumber" ColumnName="ProjectNumber" />
+                <ScalarProperty Name="FederalOrState" ColumnName="FederalOrState" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="RequestAssignmentId" ColumnName="RequestAssignmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RequestResponses">
+            <EntityTypeMapping TypeName="Section106Model.RequestResponse">
+              <MappingFragment StoreEntitySet="RequestResponse">
+                <ScalarProperty Name="LankMarksUserId" ColumnName="LankMarksUserId" />
+                <ScalarProperty Name="LankMarksComment" ColumnName="LankMarksComment" />
+                <ScalarProperty Name="LankMarksResponse" ColumnName="LankMarksResponse" />
+                <ScalarProperty Name="ArchitectUnknownProperties" ColumnName="ArchitectUnknownProperties" />
+                <ScalarProperty Name="ArchitectInEligibleProperties" ColumnName="ArchitectInEligibleProperties" />
+                <ScalarProperty Name="ArchitectEligibleProperties" ColumnName="ArchitectEligibleProperties" />
+                <ScalarProperty Name="ArchaelogicalUnknownProperties" ColumnName="ArchaelogicalUnknownProperties" />
+                <ScalarProperty Name="ArchaelogicalInEligibleProperties" ColumnName="ArchaelogicalInEligibleProperties" />
+                <ScalarProperty Name="ArchaelogicalEligibleProperties" ColumnName="ArchaelogicalEligibleProperties" />
+                <ScalarProperty Name="TechnicalUserId" ColumnName="TechnicalUserId" />
+                <ScalarProperty Name="TechnicalComment" ColumnName="TechnicalComment" />
+                <ScalarProperty Name="TechnicalResponse" ColumnName="TechnicalResponse" />
+                <ScalarProperty Name="IsTechnicalAdverseEffect" ColumnName="IsTechnicalAdverseEffect" />
+                <ScalarProperty Name="IsTechnicalNoAdverseEffect" ColumnName="IsTechnicalNoAdverseEffect" />
+                <ScalarProperty Name="IsTechnicalNoEffect" ColumnName="IsTechnicalNoEffect" />
+                <ScalarProperty Name="ArchaelogicalUserId" ColumnName="ArchaelogicalUserId" />
+                <ScalarProperty Name="ArchaelogicalComment" ColumnName="ArchaelogicalComment" />
+                <ScalarProperty Name="ArchaelogicalResponse" ColumnName="ArchaelogicalResponse" />
+                <ScalarProperty Name="IsArchaeologyAdverseEffect" ColumnName="IsArchaeologyAdverseEffect" />
+                <ScalarProperty Name="IsArchaeologyNoAdverseEffect" ColumnName="IsArchaeologyNoAdverseEffect" />
+                <ScalarProperty Name="IsArchaeologyNoEffect" ColumnName="IsArchaeologyNoEffect" />
+                <ScalarProperty Name="IsArchaeologyHistoricProperty" ColumnName="IsArchaeologyHistoricProperty" />
+                <ScalarProperty Name="IsArchaeologyNoHistoricProperty" ColumnName="IsArchaeologyNoHistoricProperty" />
+                <ScalarProperty Name="IsMoreInfoRequired" ColumnName="IsMoreInfoRequired" />
+                <ScalarProperty Name="IsSurveyRequired" ColumnName="IsSurveyRequired" />
+                <ScalarProperty Name="ArchitectUserId" ColumnName="ArchitectUserId" />
+                <ScalarProperty Name="ArchitectComment" ColumnName="ArchitectComment" />
+                <ScalarProperty Name="ArchitectResponse" ColumnName="ArchitectResponse" />
+                <ScalarProperty Name="IsHistoricProperty" ColumnName="IsHistoricProperty" />
+                <ScalarProperty Name="IsNoHistoricProperty" ColumnName="IsNoHistoricProperty" />
+                <ScalarProperty Name="RequestAssignmentId" ColumnName="RequestAssignmentId" />
+                <ScalarProperty Name="RequestId" ColumnName="RequestId" />
+                <ScalarProperty Name="RequestResponseId" ColumnName="RequestResponseId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

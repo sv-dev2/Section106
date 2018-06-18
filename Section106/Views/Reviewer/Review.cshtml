@@ -1,0 +1,1754 @@
+﻿@model Section106.Models.Models.RequestVM
+@using Section106.Models
+
+@using Section106.Models.Enums
+@{
+    bool IsReqAddInfo = false;
+    if (Model.RequestResponse != null)
+    {
+        if (User.IsInRole("Architectural"))
+        {
+            IsReqAddInfo = Model.RequestResponse.ArchitectResponse == 3 ? true : false;
+        }
+        else if (User.IsInRole("Archaeology"))
+        {
+            IsReqAddInfo = Model.RequestResponse.ArchaelogicalResponse == 3 ? true : false;
+        }
+    }
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //called when key is pressed in textbox
+        $("#RequestResponse_EligibleProperties,#RequestResponse_InEligibleProperties,#RequestResponse_UnknownProperties").keypress(function (e) {
+            //if the letter is not digit then display error and don't type anything
+            if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+                //display error message
+                $("#errmsg").html("Digits Only").show().fadeOut("slow");
+                return false;
+            }
+        });
+    });
+</script>
+@*@functions {
+
+        private void LogError(bool? IsReqAddInfo,short ArchitectResponse, string text = "")
+        {
+            string message = string.Format("Time: {0}", DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"));
+            message += Environment.NewLine;
+            message += text;
+            message += Environment.NewLine;
+            message += IsReqAddInfo;
+            message += Environment.NewLine;
+            message += ArchitectResponse;
+            string path = Server.MapPath("~/ErrorLog/ErrorLog.txt");
+            using (StreamWriter writer = new StreamWriter(path, true))
+            {
+                writer.WriteLine(message);
+                writer.Close();
+            }
+        }
+    }*@
+<div class="row form-group">
+    <div class="col-md-12">
+        <div class="dashboard-title">
+            <h3>Review Request</h3>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 text-left">
+        <div class="col-md-3 text-left">
+            <a class="btn btn-default" href="/Reviewer/ReviewersDashboard">Back To List</a>
+        </div>
+        <div class="col-md-3 text-left">
+            <span class="glyphicon glyphicon-print pointer" title="Print Form" onclick="printForm()"></span>
+        </div>
+
+    </div>
+    <div class="col-md-6 text-right">
+    </div>
+</div>
+
+<div class="row margin-top30 form-horizontal">
+    <div class="col-md-12">
+        @using (Html.BeginForm("SaveReviewerResponse", "Reviewer", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(m => m.RequestId)
+            @Html.HiddenFor(m => m.ProjectCountyId)
+            @Html.HiddenFor(m => m.Status)
+            @Html.HiddenFor(m => m.ProjectDate)
+            @Html.HiddenFor(m => m.SubmittingContact.StateId, new { @class = "SubmittingStateId" })
+            @Html.Hidden("AttachmentList")
+            @Html.HiddenFor(m => m.RequestAssignment.RequestAssignmentId)
+            @Html.HiddenFor(m => m.RequestResponse.ResponseType, new { @class = "ResponseType" })
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <h2>Project Name and Location</h2>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <div class="section-col-box-h265">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectLogNumber)
+                                            @Html.EditorFor(m => m.ProjectLogNumber, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectDateStr)
+                                            @Html.EditorFor(m => m.ProjectDateStr, new { htmlAttributes = new { @class = "form-control", @type = "date", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectName)
+                                            @Html.EditorFor(m => m.ProjectName, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box-h265">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectAddress1)
+                                            @Html.EditorFor(m => m.ProjectAddress1, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectAddress2)
+                                            @Html.EditorFor(m => m.ProjectAddress2, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectCountyId)
+                                            @Html.DropDownListFor(m => m.ProjectCountyId, new SelectList(Model.Counties, "Value", "Text"), "Select County", new { @class = "form-control", @disabled = true })
+                                            @Html.ValidationMessageFor(m => m.ProjectCountyId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box-h265">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectCityId)
+                                            @Html.DropDownListFor(m => m.ProjectCityId, new SelectList(Model.Cities, "Value", "Text"), "Select City", new { @class = "form-control", @disabled = true })
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectZip)
+                                            @Html.EditorFor(m => m.ProjectZip, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <h2>Submitting Contact</h2>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.Name)
+                                            @Html.EditorFor(m => m.SubmittingContact.Name, new { htmlAttributes = new { @class = "form-control SubmittingName", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.Company)
+                                            @Html.EditorFor(m => m.SubmittingContact.Company, new { htmlAttributes = new { @class = "form-control SubmittingCompany", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.Email)
+                                            @Html.EditorFor(m => m.SubmittingContact.Email, new { htmlAttributes = new { @class = "form-control SubmittingEmail", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.Address1)
+                                            @Html.EditorFor(m => m.SubmittingContact.Address1, new { htmlAttributes = new { @class = "form-control SubmittingAddress1", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.Address2)
+                                            @Html.EditorFor(m => m.SubmittingContact.Address2, new { htmlAttributes = new { @class = "form-control SubmittingAddress2", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.StateName)
+                                            @Html.EditorFor(m => m.SubmittingContact.StateName, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.City)
+                                            @Html.EditorFor(m => m.SubmittingContact.City, new { htmlAttributes = new { @class = "form-control SubmittingCity", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.Zip)
+                                            @Html.EditorFor(m => m.SubmittingContact.Zip, new { htmlAttributes = new { @class = "form-control SubmittingZip", @readonly = true } })
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.MobileNumber)
+                                            @Html.EditorFor(m => m.SubmittingContact.MobileNumber, new { htmlAttributes = new { @class = "form-control SubmittingMobileNumber", @readonly = true } })
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.OfficeNumber)
+                                            @Html.EditorFor(m => m.SubmittingContact.OfficeNumber, new { htmlAttributes = new { @class = "form-control SubmittingOfficeNumber", @readonly = true } })
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.SubmittingContact.Fax)
+                                            @Html.EditorFor(m => m.SubmittingContact.Fax, new { htmlAttributes = new { @class = "form-control SubmittingFax", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group applicantBox">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <h2>Applicant Contact</h2>
+
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <br />
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsApplicantSameAsSubmitting, new { @class = "request_chk", @onchange = "setSameApplicantAddress()", @disabled = true })</span>
+                                                <span class="chk_txt">Check if same as above</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.Name)
+                                            @Html.EditorFor(m => m.ApplicantContact.Name, new { htmlAttributes = new { @class = "form-control ApplicantName", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.Company)
+                                            @Html.EditorFor(m => m.ApplicantContact.Company, new { htmlAttributes = new { @class = "form-control ApplicantCompany", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.Email)
+                                            @Html.EditorFor(m => m.ApplicantContact.Email, new { htmlAttributes = new { @class = "form-control ApplicantEmail", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.Address1)
+                                            @Html.EditorFor(m => m.ApplicantContact.Address1, new { htmlAttributes = new { @class = "form-control ApplicantAddress1", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.Address2)
+                                            @Html.EditorFor(m => m.ApplicantContact.Address2, new { htmlAttributes = new { @class = "form-control ApplicantAddress2", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.StateId)
+                                            @Html.DropDownListFor(m => m.ApplicantContact.StateId, new SelectList(Model.States, "Value", "Text"), "Select State", new { @class = "form-control ApplicantStateId", @disabled = true })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.City)
+                                            @Html.EditorFor(m => m.ApplicantContact.City, new { htmlAttributes = new { @class = "form-control ApplicantCity", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.Zip)
+                                            <span class="text-danger">*</span>
+                                            @Html.EditorFor(m => m.ApplicantContact.Zip, new { htmlAttributes = new { @class = "form-control ApplicantZip", @readonly = true } })
+                                            @Html.ValidationMessageFor(m => m.ApplicantContact.Zip, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <span class="text-danger">*</span>
+                                            @Html.LabelFor(m => m.ApplicantContact.OfficeNumber)
+                                            @Html.EditorFor(m => m.ApplicantContact.OfficeNumber, new { htmlAttributes = new { @class = "form-control ApplicantOfficeNumber", @readonly = true } })
+                                            @Html.ValidationMessageFor(m => m.ApplicantContact.OfficeNumber, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.MobileNumber)
+                                            @Html.EditorFor(m => m.ApplicantContact.MobileNumber, new { htmlAttributes = new { @class = "form-control ApplicantMobileNumber", @readonly = true } })
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ApplicantContact.Fax)
+                                            @Html.EditorFor(m => m.ApplicantContact.Fax, new { htmlAttributes = new { @class = "form-control ApplicantFax", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <h2>Project Description</h2>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="section-col-box-noheight">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ProjectDescription)
+                                            @Html.TextAreaFor(m => m.ProjectDescription, 10, 0, new { @class = "form-control", @readonly = true })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Longitude)
+                                            @Html.EditorFor(m => m.Longitude, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Latitude)
+                                            @Html.EditorFor(m => m.Latitude, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.TownShip)
+                                            @Html.EditorFor(m => m.TownShip, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Range)
+                                            @Html.EditorFor(m => m.Range, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Section)
+                                            @Html.EditorFor(m => m.Section, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>Location (Check all that apply)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsFederalProperty, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Federal Property</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsStateProperty, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">State Property</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsMunicipalProperty, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Municipal Property</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsPrivateProperty, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Private Property</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.AgencyId)
+                                            @Html.DropDownListFor(m => m.AgencyId, new SelectList(Model.Agencies, "Value", "Text"), "Select Agency", new { @class = "form-control", @disabled = true })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.AgencyProjectNumber)
+                                            @Html.EditorFor(m => m.AgencyProjectNumber, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <h2>Proposed Work</h2>
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>Project includes (Check all that apply)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsConstructionExcavation, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Construction / Excavation</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsRehabilitation, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Rehabilitation</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsDemolition, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Demolition</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsSaleOrTransfer, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Sale / Transfer</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsNonConstructionLoan, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Non Construction Loan</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsOther, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Other</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group otherDesc">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.OtherDescription)
+                                            @Html.EditorFor(m => m.OtherDescription, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.TotalProjectArea)
+                                            @Html.EditorFor(m => m.TotalProjectArea, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.TotalGroundDisturbance)
+                                            @Html.EditorFor(m => m.TotalGroundDisturbance, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.IsMississippiLandmarks)
+                                            <label class="radio_container">
+                                                <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.IsMississippiLandmarks, true, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="radio_txt">Yes</span>
+                                            </label>
+                                            <label class="radio_container">
+                                                <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.IsMississippiLandmarks, false, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="radio_txt">No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.IsHistoricOrGovtProperty)
+                                            <label class="radio_container">
+                                                <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.IsHistoricOrGovtProperty, 1, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="radio_txt">Yes</span>
+                                            </label>
+
+                                            <label class="radio_container">
+                                                <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.IsHistoricOrGovtProperty, 2, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="radio_txt">No</span>
+                                            </label>
+
+                                            <label class="radio_container">
+                                                <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.IsHistoricOrGovtProperty, 0, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="radio_txt">Unsure</span>
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.HistoricPropertyName)
+                                            @Html.EditorFor(m => m.HistoricPropertyName, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <label>
+                                                <span class="chk_box">@Html.CheckBoxFor(m => m.IsOldStructure, new { @class = "request_chk", @disabled = true })</span>
+                                                <span class="chk_txt">Check if buildings or structures in the project area are 50 years or older</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                @*<div class="col-md-12">
+                        <div class="section-box">
+                            <h2>Attachments</h2>
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <span>Include the following information with this form.</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <ul class="attached_docs">
+                                                    <li>Map - 7.5' USGS topograhic quad showing project boundary and Area of Potential Effect.</li>
+                                                    <li>Definition / Scope - Describe the project, including any ground disturbance and previous land use.</li>
+                                                    <li>Site Plans / Drawings - Indicate the location and age, if known, of all structures in the project area.</li>
+                                                    <li>Photographs - Attach photos showing the project site, including images of all structures keyed to a site plan.</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <span>-OR-</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="row form-group">
+                                                    <div class="col-md-12">
+                                                        <label>
+                                                            <span class="chk_box">@Html.CheckBoxFor(m => m.IsDocumentSentViaEmail, new { @class = "request_chk", @disabled = true })</span>
+                                                            <span class="chk_txt">Documents will be sent via mail</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="col-md-12" style="padding-left: 50px;">
+                                                        Mail to:<br /><br />
+                                                        Mississippi Department of archives and History<br />
+                                                        Attn: Review and Compliance Officer<br />
+                                                        PO Box 571<br />
+                                                        Jackson, MS  39205
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="row form-group attachmentBox">
+                @*<div class="col-md-12">
+                    <div class="section-box">
+                        <div class="row form-group">*@
+                @*<div class="col-md-12">
+                    <div class="section-col-box-noheight">*@
+
+                @*<div class="row form-group">
+                        <div class="col-md-6">
+                            <h4>Attachments</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button type="button" class="btn btn-info" onclick="showAttachmentModal()" disabled>Add</button>
+                        </div>
+                    </div>*@
+
+                @*<div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>File Type</th>
+                                            <th>File Name</th>
+                                            <th>Comment</th>
+                                            <th class="action_100">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attachmentBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>*@
+
+                @*</div>
+                    </div>*@
+                @*</div>
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="row form-group correspondenceBox">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <h2>Correspondence and Status</h2>
+                        @*<h2>Correspondence and Status</h2>*@
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="section-col-box-noheight">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-6">
+                                            <h4>Letters</h4>
+                                        </div>
+                                        <div class="col-md-6 text-right">
+                                            @*<button type="button" class="btn btn-info" disabled>New Letter</button>*@
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Letter Type</th>
+                                                            <th>Date</th>
+                                                            <th class="action_100">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="correspondenceBody"></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="section-box">
+                        <h2>Reviewers Response</h2>
+                        <div class="row form-group">
+
+                            <div class="col-md-3">
+                                <div class="section-col-box-h265">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12 text-center">
+                                            <h4>Architectural Response</h4>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    @if (Model.RequestAssignment.IsAssignToArchitect)
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <span>Status</span>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @if (Model.RequestAssignment.ArchitechStatus == ReviewerRequestStatus.Pending)
+                                        {
+                                        <label class="label label-info">Pending</label>
+                                        }
+                                        else if (Model.RequestAssignment.ArchitechStatus == ReviewerRequestStatus.Approved)
+                                        {
+                                        <label class="label label-success">Completed</label>
+                                        }
+                                        else if (Model.RequestAssignment.ArchitechStatus == ReviewerRequestStatus.Rejected)
+                                        {
+                                        <label class="label label-danger">Rejected</label>
+                                        }
+                                        else if (Model.RequestAssignment.ArchitechStatus == ReviewerRequestStatus.MoreInfoRequired)
+                                        {
+                                        <label class="label label-primary">More Information Required</label>
+                                        }
+                                    </div>
+                                </div>
+
+                                if (!(Model.RequestAssignment.ArchitechStatus == ReviewerRequestStatus.Pending))
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <label>Comment</label>
+                                        <div><span>@Model.RequestResponse.ArchitectComment</span></div>
+                                    </div>
+                                </div>
+                                }
+                                }
+                                else
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-12 text-center">
+                                        <label class="label label-primary">Not Assigned</label>
+                                    </div>
+                                </div>
+                                }
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="section-col-box-h265">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12 text-center">
+                                            <h4>Archaeology Response</h4>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    @if (Model.RequestAssignment.IsAssignToArchaelogical)
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <span>Status</span>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @if (Model.RequestAssignment.ArchaelogicalStatus == ReviewerRequestStatus.Pending)
+                                        {
+                                        <label class="label label-info">Pending</label>
+                                        }
+                                        else if (Model.RequestAssignment.ArchaelogicalStatus == ReviewerRequestStatus.Approved)
+                                        {
+                                        <label class="label label-success">Completed</label>
+                                        }
+                                        else if (Model.RequestAssignment.ArchaelogicalStatus == ReviewerRequestStatus.Rejected)
+                                        {
+                                        <label class="label label-danger">Rejected</label>
+                                        }
+                                        else if (Model.RequestAssignment.ArchaelogicalStatus == ReviewerRequestStatus.MoreInfoRequired)
+                                        {
+                                        <label class="label label-primary">More Information Required</label>
+                                        }
+                                        else if (Model.RequestAssignment.ArchaelogicalStatus == ReviewerRequestStatus.SurveyRequired)
+                                        {
+                                        <label class="label label-primary">Survey Required</label>
+                                        }
+                                    </div>
+                                </div>
+                                if (!(Model.RequestAssignment.ArchaelogicalStatus == ReviewerRequestStatus.Pending))
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <label>Comment</label>
+                                        <div><span>@Model.RequestResponse.ArchaelogicalComment</span></div>
+                                    </div>
+                                </div>
+                                }
+                                }
+                                else
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-12 text-center">
+                                        <label class="label label-primary">Not Assigned</label>
+                                    </div>
+                                </div>
+                                }
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="section-col-box-h265">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12 text-center">
+                                            <h4>Technical Assistance Response</h4>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    @if (Model.RequestAssignment.IsAssignToTechnical)
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <span>Status</span>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @if (Model.RequestAssignment.TechnicalStatus == ReviewerRequestStatus.Pending)
+                                        {
+                                        <label class="label label-info">Pending</label>
+                                        }
+                                        else if (Model.RequestAssignment.TechnicalStatus == ReviewerRequestStatus.Approved)
+                                        {
+                                        <label class="label label-success">Completed</label>
+                                        }
+                                        else if (Model.RequestAssignment.TechnicalStatus == ReviewerRequestStatus.Rejected)
+                                        {
+                                        <label class="label label-danger">Rejected</label>
+                                        }
+                                        else if (Model.RequestAssignment.TechnicalStatus == ReviewerRequestStatus.MoreInfoRequired)
+                                        {
+                                        <label class="label label-primary">More Information Required</label>
+                                        }
+                                    </div>
+                                </div>
+                                if (!(Model.RequestAssignment.TechnicalStatus == ReviewerRequestStatus.Pending))
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <label>Comment</label>
+                                        <div><span>@Model.RequestResponse.TechnicalComment</span></div>
+                                    </div>
+                                </div>
+                                }
+                                }
+                                else
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-12 text-center">
+                                        <label class="label label-primary">Not Assigned</label>
+                                    </div>
+                                </div>
+                                }
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="section-col-box-h265">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12 text-center">
+                                            <h4>Landmarks Response</h4>
+                                        </div>
+                                    </div>
+                                    <hr />
+
+                                    @if (Model.RequestAssignment.IsAssignToLandMarks)
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <span>Status</span>
+                                    </div>
+                                    <div class="col-md-9">
+                                        @if (Model.RequestAssignment.LandMarksStatus == ReviewerRequestStatus.Pending)
+                                            {
+                                            <label class="label label-info">Pending</label>
+                                            }
+                                            else if (Model.RequestAssignment.LandMarksStatus == ReviewerRequestStatus.Approved)
+                                            {
+                                            <label class="label label-success">Completed</label>
+                                            }
+                                            else if (Model.RequestAssignment.LandMarksStatus == ReviewerRequestStatus.Rejected)
+                                            {
+                                            <label class="label label-danger">Rejected</label>
+                                            }
+                                            else if (Model.RequestAssignment.LandMarksStatus == ReviewerRequestStatus.MoreInfoRequired)
+                                            {
+                                            <label class="label label-primary">More Information Required</label>
+                                            }
+                                    </div>
+                                </div>
+
+                                    if (!(Model.RequestAssignment.LandMarksStatus == ReviewerRequestStatus.Pending))
+                                    {
+                                <div class="row form-group">
+                                    <div class="col-md-12">
+                                        <label>Comment</label>
+                                        <div><span>@Model.RequestResponse.LandmarksComment</span></div>
+                                    </div>
+                                </div>
+                                    }
+                                }
+                                else
+                                {
+                                <div class="row form-group">
+                                    <div class="col-md-12 text-center">
+                                        <label class="label label-primary">Not Assigned</label>
+                                    </div>
+                                </div>
+                                }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            if (User.IsInRole("Architectural"))
+            {
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="section-box">
+                            <h2>Architecture Review</h2>
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsNoHistoricProperty, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">There are NO HISTORIC PROPERTIES in the Area of Potential Effect.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsHistoricProperty, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">There are HISTORIC PROPERTIES in the Area of Potential Effect.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of Eligible Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.EligibleProperties, new { htmlAttributes = new { type="number", min = "0", @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of InEligible Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.InEligibleProperties, new { htmlAttributes = new { type = "number", min = "0", @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of Unknown Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.UnknownProperties, new { htmlAttributes = new { type = "number", min = "0", @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="row form-group">
+                                            <div class="col-md-12">
+                                            <label>
+                                            <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsNoAdverseEffect, new { @class = "request_chk" })</span>
+                                            <span class="chk_txt">The project will have NO ADVERSE EFFECTS on historic properties.</span>
+                                            </label>
+                                            </div>
+                                            </div>
+
+                                            <div class="row form-group">
+                                            <div class="col-md-12">
+                                            <label>
+                                            <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsNoAdverseEffectWithCondition, new { @class = "request_chk" })</span>
+                                            <span class="chk_txt">The project will have NO ADVERSE EFFECTS WITH CONDITIONS.</span>
+                                            </label>
+                                            </div>
+                                            </div>*@
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                @*<label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.ArchitectResponse, Convert.ToInt16(ReviewerResponse.Eligible), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Eligible</span>
+                                                    </label>
+
+                                                    <label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.ArchitectResponse, Convert.ToInt16(ReviewerResponse.NotEligible), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Not Eligible</span>
+                                                    </label>*@
+
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => IsReqAddInfo, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">Request Additional Information</span>
+                                                </label>
+                                                <br />
+
+                                                @*@Html.ValidationMessageFor(m => m.RequestResponse.ArchitectResponse, "", new { @class = "text-danger" })*@
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                @Html.LabelFor(m => m.RequestResponse.ArchitectComment)
+                                                @Html.TextAreaFor(m => m.RequestResponse.ArchitectComment, 7, 0, new { @class = "form-control ArchitectComment", @onkeyup = "textCounter('ArchitectComment','architectCounter',500);" })
+                                                <div style="float:right">
+                                                    <span> Characters Remaining: </span><span id="architectCounter">500</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        textCounter('ArchitectComment','architectCounter',500);
+                    })
+                </script>
+            }
+            else if (User.IsInRole("Archaeology"))
+            {
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="section-box">
+                            <h2>Archaeology Review</h2>
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsSurveyRequired, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">Survey Required.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsMoreInfoRequired, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">More Information Required.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsArchaeologyNoHistoricProperty, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">There are NO HISTORIC PROPERTIES in the Area of Potential Effect.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsArchaeologyHistoricProperty, new { @class = "request_chk", @onchange = "GetEffectOptions()" })</span>
+                                                    <span class="chk_txt">There are HISTORIC PROPERTIES in the Area of Potential Effect.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of Eligible Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.EligibleProperties, new { htmlAttributes = new {  @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of InEligible Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.InEligibleProperties, new { htmlAttributes = new { @type="number", @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of Unknown Properties</span>
+                                                        @Html.TextBoxFor(m => m.RequestResponse.UnknownProperties, new { htmlAttributes = new { @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="EffectsId" style="padding:20px;display:none;">
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label>
+                                                        <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsArchaeologyNoEffect, new { @class = "request_chk" })</span>
+                                                        <span class="chk_txt">No Effect</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label>
+                                                        <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsArchaeologyNoAdverseEffect, new { @class = "request_chk" })</span>
+                                                        <span class="chk_txt">No Adverse Effect</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="row form-group">
+                                                <div class="col-md-12">
+                                                    <label>
+                                                        <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsArchaeologyAdverseEffect, new { @class = "request_chk" })</span>
+                                                        <span class="chk_txt">Adverse Effect</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                @*<label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.ArchaelogicalResponse, Convert.ToInt16(ReviewerResponse.Eligible), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Eligible</span>
+                                                    </label>
+
+                                                    <label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.ArchaelogicalResponse, Convert.ToInt16(ReviewerResponse.NotEligible), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Not Eligible</span>
+                                                    </label>*@
+
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => IsReqAddInfo, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">Request Additional Information</span>
+                                                </label>
+
+                                                @*<label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.ArchaelogicalResponse, Convert.ToInt16(ReviewerResponse.SurveyRequired), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Survey Required</span>
+                                                    </label>*@
+                                                <br />
+                                                @*@Html.ValidationMessageFor(m => IsReqAddInfo, "", new { @class = "text-danger" })*@
+                                                @*@Html.ValidationMessageFor(m => m.RequestResponse.ArchaelogicalResponse, "", new { @class = "text-danger" })*@
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                @Html.LabelFor(m => m.RequestResponse.ArchaelogicalComment)
+                                                @Html.TextAreaFor(m => m.RequestResponse.ArchaelogicalComment, 7, 0, new { @class = "form-control ArchaelogicalComment", @onkeyup = "textCounter('ArchaelogicalComment','archaelogicalCounter',500);" })
+                                                <div style="float:right">
+                                                    <span> Characters Remaining: </span><span id="archaelogicalCounter">500</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        textCounter('ArchaelogicalComment','archaelogicalCounter',500);
+                    })
+                </script>
+            }
+            else if (User.IsInRole("Technical Assistance"))
+            {
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="section-box">
+                            <h2>Technical Assistance Review</h2>
+
+                            <div class="row form-group">
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+                                        <input type="hidden" value="false" name="IsReqAddInfo" />
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsTechnicalNoEffect, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">No Effect</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsTechnicalNoAdverseEffect, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">No Adverse Effect</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsTechnicalAdverseEffect, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">Adverse Effect</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.TechnicalResponse, Convert.ToInt16(ReviewerResponse.Eligible), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Eligible</span>
+                                                </label>
+
+                                                <label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.TechnicalResponse, Convert.ToInt16(ReviewerResponse.NotEligible), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Not Eligible</span>
+                                                </label>
+
+                                                <label>
+                                                    <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.RequestResponse.TechnicalResponse, Convert.ToInt16(ReviewerResponse.RequestAdditionalInformation), new { @class = "request_chk" })</span>
+                                                    <span class="radio_txt">Request Additional Information</span>
+                                                </label>
+                                                <br />
+                                                @Html.ValidationMessageFor(m => m.RequestResponse.TechnicalResponse, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                @Html.LabelFor(m => m.RequestResponse.TechnicalComment)
+                                                @Html.TextAreaFor(m => m.RequestResponse.TechnicalComment, 7, 0, new { @class = "form-control TechnicalComment", @onkeyup = "textCounter('TechnicalComment','technicalCounter',500);" })
+                                                <div style="float:right">
+                                                    <span> Characters Remaining: </span><span id="technicalCounter">500</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        textCounter('TechnicalComment','technicalCounter',500);
+                    })
+                </script>
+            }
+            else if (User.IsInRole("Landmarks"))
+            {
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="section-box">
+                            <h2>Landmarks Review</h2>
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsNoHistoricProperty, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">There are NO HISTORIC PROPERTIES in the Area of Potential Effect.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => m.RequestResponse.IsHistoricProperty, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">There are HISTORIC PROPERTIES in the Area of Potential Effect.</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of Eligible Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.EligibleProperties, new { htmlAttributes = new { type = "number", min = "0", @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of InEligible Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.InEligibleProperties, new { htmlAttributes = new { type = "number", min = "0", @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                <div class="eligible-box">
+                                                    <label>
+                                                        <span>Number of Unknown Properties</span>
+                                                        @Html.EditorFor(m => m.RequestResponse.UnknownProperties, new { htmlAttributes = new { type = "number", min = "0", @class = "form-control" } })
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>      
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row form-group">
+
+                                <div class="col-md-12">
+                                    <div class="section-col-box-noheight">
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">                                           
+                                                <label>
+                                                    <span class="chk_box">@Html.CheckBoxFor(m => IsReqAddInfo, new { @class = "request_chk" })</span>
+                                                    <span class="chk_txt">Request Additional Information</span>
+                                                </label>
+                                                <br />
+                                              
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group">
+                                            <div class="col-md-12">
+                                                @Html.LabelFor(m => m.RequestResponse.LandmarksComment)
+                                                @Html.TextAreaFor(m => m.RequestResponse.LandmarksComment, 7, 0, new { @class = "form-control LandmarksComment", @onkeyup = "textCounter('LandmarksComment','landmarksCounter',500);" })
+                                                <div style="float:right">
+                                                    <span> Characters Remaining: </span><span id="landmarksCounter">500</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        textCounter('LandmarksComment','landmarksCounter',500);
+                    })
+                </script>
+            }
+
+            <div class="row">
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-7 text-right">
+                    <a href="@Url.Action("ReviewersDashboard", "Reviewer")" class="btn btn-default">Cancel</a>
+                    <button type="submit" onclick="return setResponseType(@Convert.ToInt32(ReviewerResponseType.SaveAndCompleteLater))" class="btn btn-info">Save and Complete Later</button>
+                    <button type="submit" onclick="return setResponseType(@Convert.ToInt32(ReviewerResponseType.SaveAndSubmit))" class="btn btn-info">Submit</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="viewModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        File
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row form-horizontal">
+                    <div class="col-md-12">
+                        <img id="imgFile" src="" width="570" />
+                        <object type="application/pdf" id="pdfFile" data="" width="100%" height="300" style="height: 85vh;">No Support</object>
+                        <object id="docFile" data="">No Support</object>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="correspondenceViewModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-6">
+                        Correspondence
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row form-horizontal">
+                    <div class="col-md-12">
+                        <object type="application/pdf" id="pdfCorrespondence" data="" width="100%" height="400">No Support</object>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    .control-label {
+        text-align: left !important;
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+
+<script type="text/javascript">
+    function  printForm(){
+        window.print()
+    }
+    var attachments = [];
+    var correspondenceList = [];
+
+    $(document).ready(function () {
+
+        // Masking
+        $('#Longitude').mask("-99.999999");
+        $('#Latitude').mask("99.999999");
+
+        $('#ProjectZip').mask("99999");
+        $('#SubmittingContact_Zip').mask("99999");
+        $('#SubmittingContact_Fax').mask("(999) 999-9999");
+        $('#SubmittingContact_MobileNumber').mask("(999) 999-9999");
+        $('#SubmittingContact_OfficeNumber').mask("(999) 999-9999");
+
+        $('#ApplicantContact_Zip').mask("99999");
+        $('#ApplicantContact_Fax').mask("(999) 999-9999");
+        $('#ApplicantContact_MobileNumber').mask("(999) 999-9999");
+        $('#ApplicantContact_OfficeNumber').mask("(999) 999-9999");
+
+        var dbAttachments = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Attachments));
+        var dbCorrespondence = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.CorrespondenceList));
+
+        for (var i = 0; i < dbAttachments.length; i++) {
+            var attachment = { 'IsNew':false, 'Id': dbAttachments[i].AttachmentId, 'Name': dbAttachments[i].Name, 'Type': dbAttachments[i].Type, 'Comment': dbAttachments[i].Comment }
+            attachments.push(attachment);
+        }
+
+        for (var i = 0; i < dbCorrespondence.length; i++) {
+            var correspondence = ({ 'CorrespondenceId':dbCorrespondence[i].CorrespondenceId, 'CorrespondenceTypeId':dbCorrespondence[i].CorrespondenceTypeId,'CorrespondenceType':dbCorrespondence[i].CorrespondenceTypeName,'Date':dbCorrespondence[i].Date, 'Body':dbCorrespondence[i].Body });
+            correspondenceList.push(correspondence);
+        }
+
+        updateAttachmentList();
+        updateCorrespondenceList();
+        hideShowOtherDescription();
+        GetEffectOptions();
+
+    });
+
+    function hideShowOtherDescription() {
+        if ($("#IsOther").is(":checked")) {
+            $(".otherDesc").show();
+        }
+        else {
+            $(".otherDesc").hide();
+        }
+    }
+
+    function updateAttachmentList() {
+        var filesHtml = '';
+
+        if (attachments.length > 0) {
+            for (var i = 0; i < attachments.length; i++) {
+                filesHtml += '<tr><td>';
+                filesHtml += attachments[i].Type;
+                filesHtml += '</td><td>';
+                filesHtml += attachments[i].Name;
+                filesHtml += '</td><td>';
+                filesHtml += attachments[i].Comment;
+                //filesHtml += '</td><td><button type="button" title="View Attachment" onclick=viewAttachment(\''+attachments[i].Id+'_'+attachments[i].Name+'\') class="btn btn-primary btn-xs"><i class="fa fa-search"></i></button>';
+                filesHtml += '</td><td><button type="button" onclick="viewAttachment(\''+@Model.RequestId+'_'+attachments[i].Name+'\')" class="btn btn-primary btn-xs"><i class="fa fa-search"></i> View Attachment</button>';
+                filesHtml += '</td></tr>';
+            }
+        }
+        else{
+            filesHtml += '<tr class="text-center"><td colspan="4"><span style="font-size:20px;">No attachment found for this request.</span></td></tr>';
+        }
+
+        $("#attachmentBody").html(filesHtml);
+    }
+
+    function updateCorrespondenceList() {
+        var correspondenceHtml = '';
+
+        if (correspondenceList.length > 0) {
+            for (var i = 0; i < correspondenceList.length; i++) {
+                correspondenceHtml += '<tr><td>';
+                correspondenceHtml += correspondenceList[i].CorrespondenceType;
+                correspondenceHtml += '</td><td>';
+                correspondenceHtml += correspondenceList[i].Date;
+                //correspondenceHtml += '</td><td><button type="button" class="btn btn-primary btn-xs" title="View Correspondence" onclick="viewCorrespondence('+correspondenceList[i].CorrespondenceId+')"><i class="fa fa-search"></i> View Correspondence</button>';
+                correspondenceHtml += '</td><td><button type="button"  onclick="viewCorrespondence(\''+correspondenceList[i].CorrespondenceId+'_'+correspondenceList[i].CorrespondenceType+'\')" class="btn btn-primary btn-xs"><i class="fa fa-search"></i> View Correspondence</button>';
+                correspondenceHtml += '</td></tr>';
+            }
+        }
+        else{
+            correspondenceHtml += '<tr class="text-center"><td colspan="4"><span style="font-size:20px;">No correspondence found for this request.</span></td></tr>';
+        }
+
+        $("#correspondenceBody").html(correspondenceHtml);
+    }
+
+    function viewCorrespondence(correspondence) {
+        $('#pdfCorrespondence').attr('data','/Correspondence/'+correspondence+'.pdf');
+        $("#correspondenceViewModal").modal('show');
+    }
+
+    function setResponseType(responseType) {
+        debugger;
+        var isArchitectural = '@User.IsInRole("Architectural")'
+        var isArchaeology = '@User.IsInRole("Archaeology")'
+        var isTechnicalAssistance = '@User.IsInRole("Technical Assistance")'
+
+        if (isArchitectural == "True") {
+            var architectComment = $(".ArchitectComment").val();
+            if (architectComment == "" || architectComment ==null) {
+                toastr.error("Please enter comment in the comment box.");
+                return false;
+            }
+        }
+
+        if (isArchaeology == "True") {
+            var archaelogicalComment = $(".ArchaelogicalComment").val();
+            if (archaelogicalComment == "" || archaelogicalComment ==null) {
+                toastr.error("Please enter comment in the comment box.");
+                return false;
+            }
+        }
+
+        if (isTechnicalAssistance == "True") {
+            var technicalComment = $(".TechnicalComment").val();
+            if (technicalComment == "" || technicalComment ==null) {
+                toastr.error("Please enter comment in the comment box.");
+                return false;
+            }
+        }
+
+        $(".ResponseType").val(responseType);
+        return true;
+    }
+
+    function viewAttachment(attachment) {
+        var ext = attachment.substr(attachment.lastIndexOf('.')+1).toLowerCase();
+        if (ext == 'docx' || ext == 'doc' || ext == 'xlsx' || ext == 'xls'|| ext=='csv'||ext=='ods') {
+            $("#imgFile").hide();
+            $('#pdfFile').hide();
+            $('#docFile').attr('data','/Attachments/'+attachment);
+            $('#docFile').show();
+            $("#viewModal").modal('show');
+            $("#viewModal").modal('hide');
+        }
+        else if (ext == 'png' || ext == 'jpg' || ext == 'jpeg' || ext == 'gif') {
+            $('#pdfFile').hide();
+            $('#docFile').hide();
+            $("#imgFile").attr('src',"/Attachments/"+attachment);
+            $("#imgFile").show();
+            $("#viewModal").modal('show');
+        }
+        else if (ext == 'pdf') {
+            $("#imgFile").hide();
+            $('#docFile').hide();
+            $('#pdfFile').attr('data','/Attachments/'+attachment);
+            $('#pdfFile').show();
+            $("#viewModal").modal('show');
+        }
+    }
+
+    function GetEffectOptions()
+    {
+        if($('#RequestResponse_IsArchaeologyHistoricProperty').is(':checked'))
+        {
+            $("#EffectsId").css("display","block")
+        }else{
+            $("#EffectsId").css("display","none")
+            $('#RequestResponse_IsArcheaologyNoEffect').prop('checked', false);
+            $('#RequestResponse_IsArcheaologyNoAdverseEffect').prop('checked', false);
+            $('#RequestResponse_IsArcheaologyAdverseEffect').prop('checked', false);
+        }
+    }
+
+    function textCounter(txtField,field, maxlimit) {
+        debugger;
+        var txtArea = $("." + txtField);
+        var countfield = document.getElementById(field);
+        if (txtArea.val().length > maxlimit) {
+            txtArea.val(txtArea.value.substring(0, maxlimit));
+            return false;
+        } else {
+            $('#' + field).text(maxlimit - txtArea.val().length);
+        }
+    }
+
+</script>

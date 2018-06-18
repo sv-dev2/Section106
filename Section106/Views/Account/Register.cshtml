@@ -1,0 +1,234 @@
+﻿@model Section106.Models.RegisterViewModel
+@using Section106.Models
+@using System.Configuration
+@using Section106.Models.Enums
+
+
+<h2>Create a new account</h2>
+<div class="row form-horizontal">
+    <div class="col-md-12">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-box">
+                    <h2>Request Account</h2>
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "frmRegister" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="row form-group">
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.UserName) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Email) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                            <span class="" style="display:none;color:#a94442;" id="lblErrorEmailExists">Email already exists.</span>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Password) <span class="text-danger">*</span>
+                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.ConfirmPassword) <span class="text-danger">*</span>
+                                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12 contactedby-label">
+                                            @Html.LabelFor(m => m.ContactedBy)
+                                            <label class="radio_container1">
+                                                <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.ContactedBy, Convert.ToInt16(ContactStatus.Email), new { @class = "request_chk" })</span>
+                                                <span class="radio_txt">Email</span>
+                                            </label>
+                                            <label class="radio_container1">
+                                                <span class="chk_box radio_radius">@Html.RadioButtonFor(m => m.ContactedBy, Convert.ToInt16(ContactStatus.PostalMail), new { @class = "request_chk" })</span>
+                                                <span class="radio_txt">Postal Mail</span>
+                                            </label>
+                                        </div>
+                                        @Html.ValidationMessageFor(m => m.ContactedBy, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Name) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Company) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Company, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Company, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Address1) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Address1, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Address1, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Address2)
+                                            @Html.TextBoxFor(m => m.Address2, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Address2, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.StateId) <span class="text-danger">*</span>
+                                            @Html.DropDownListFor(m => m.StateId, new SelectList(Model.States, "Value", "Text"), "Select State", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.StateId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4">
+                                <div class="section-col-box">
+
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.City) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Zip) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.Zip, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Zip, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.Fax)
+                                            @Html.TextBoxFor(m => m.Fax, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Fax, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.MobilePhone) <span class="text-danger">*</span>
+                                            @Html.TextBoxFor(m => m.MobilePhone, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.MobilePhone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            @Html.LabelFor(m => m.OfficePhone)
+                                            @Html.TextBoxFor(m => m.OfficePhone, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.OfficePhone, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                                <div class="captcha-cntainer">
+                                    <div class="g-recaptcha" id="rcaptcha" data-sitekey='@ConfigurationManager.AppSettings["ReCaptcha_key"].ToString()'></div>
+                                    <span id="captcha" style="color:red" />
+                                </div>
+                            </div>
+
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                @Html.ActionLink("Back", "Login", "Account", null, new { @class = "btn btn-default" })
+                                @* <input type="button" class="btn btn-primary" value="Register" />*@
+                                <input type="button" onclick="CheckCaptcha()" class="btn btn-primary" value="Register" />
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<style type="text/css">
+    .control-label {
+        text-align: left !important;
+    }
+</style>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script src="/Scripts/jquery-1.10.2.js"></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //Masking
+        $('#Zip').mask("99999");
+        $('#Fax').mask("(999) 999-9999");
+        $('#MobilePhone').mask("(999) 999-9999");
+        $('#OfficePhone').mask("(999) 999-9999");
+
+        $("#Email").focusout(function () {
+
+            var emailT = $(this).val();
+            $.ajax({
+                url: '@Url.Action("checkDuplicateEmail", "Admin")',
+                type: "POST",
+                data: { email: emailT },
+                success: function (data) {
+                    // perform your save call here
+                    if (data == "True") {
+                        $("#lblErrorEmailExists").show();
+                    } else {
+                        $("#lblErrorEmailExists").hide();
+                    }
+                },
+                error: function () {
+                    alert("An error has occured!!!");
+                }
+            });
+
+        });
+
+    });
+
+    (function (i, s, o, g, r, a, m) { i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o), m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m) })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga'); ga('create', 'UA-83642035-1', 'auto'); ga('send', 'pageview');
+    function CheckCaptcha() {
+        debugger;
+        if ($("#frmRegister").valid()) {
+
+        }
+        var v = grecaptcha.getResponse();
+        if (v.length == 0) {
+            document.getElementById('captcha').innerHTML = "You can't leave Captcha Code empty";
+        }
+        else {
+            $("#captcha").css('color', 'green');
+            document.getElementById('captcha').innerHTML = "Captcha completed";
+            $('form').submit();
+        }
+
+    }
+</script>

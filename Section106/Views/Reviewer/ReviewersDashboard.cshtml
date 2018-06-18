@@ -1,0 +1,111 @@
+﻿@using Section106.Models.Models
+@using Section106.Models.Enums
+@model List<RequestVM>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.16/datatables.min.js"></script>
+<link href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css" rel="stylesheet" />
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="dashboard-title">
+            @if (User.IsInRole("Architectural"))
+            {
+                <h3>Architectural Dashboard</h3>
+            }
+            else if (User.IsInRole("Archaeology"))
+            {
+                <h3>Archaeology Dashboard</h3>
+            }
+            else if (User.IsInRole("Technical Assistance"))
+            {
+                <h3>Technical Assistance Dashboard</h3>
+            }
+            else if (User.IsInRole("Landmarks"))
+            {
+                <h3>Landmarks Dashboard</h3>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="row margin-top30 form-horizontal">
+    <div class="col-md-12">
+        <div class="section-col-box">
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped" id="myTable" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Project Number</th>
+                                    <th>Request Name</th>
+                                    <th>Submittal Date</th>
+                                    <th>Status</th>
+                                    <th class="action_100">Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#myTable').DataTable({
+            "processing": true, // for show progress bar
+            "serverSide": true, // for process server side
+            "filter": false, // this is for disable filter (search box)
+            "orderMulti": false, // for disable multiple column at once
+            "searching": false,
+
+            "ajax": {                
+                "url": '@Url.Action("GetReviewerRequestsByRole", "Reviewer")',
+                "type": "Get",
+                "datatype": "json"
+            },
+            "columns": [
+                 { "data": "ProjectLogNumber", "name": "ProjectLogNumber", "orderable": false },
+                { "data": "ProjectName", "name": "ProjectName", "orderable": false },
+                { "data": "ProjectDate", "name": "ProjectDate", "orderable": false },
+                { "data": "StatusStr", "name": "StatusStr", "orderable": false },
+                { "data": "RequestId", "name": "RequestId", "orderable": false },
+            ],
+            "columnDefs": [
+                    {
+                        "targets": 4,
+                        "data": "download_link",
+                        "render": function (data, type, full, meta) {
+                            return '<a href=/Reviewer/Review?RequestId=' + data + ' title="Review" class="btn btn-success btn-xs"><i class="fa fa-pencil"></i> Review</a>'
+                        }
+                    },
+                     {
+                         "targets": 2,
+                         "render": function (data, type, full, meta) {
+                             if (data != null) {
+                                 var dateString = data.substr(6);
+                                 var currentTime = new Date(parseInt(dateString));
+                                 var month = currentTime.getMonth() + 1;
+                                 var day = currentTime.getDate();
+                                 var year = currentTime.getFullYear();
+                                 var date = (month < 10 ? "0" + month : month) + "/" + (day < 10 ? "0" + day : day) + "/" + year;
+                                 return date;
+                             }
+                             return null;
+                         }
+                     }
+            ],
+            'order': [[1, 'asc']]
+        });
+
+    });
+</script>

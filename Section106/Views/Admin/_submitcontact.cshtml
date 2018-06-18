@@ -1,0 +1,128 @@
+﻿@model Section106.Models.Models.ContactVM
+
+<div class="row form-group">
+    <div class="col-md-12">
+        <div class="section-box">
+            <div class="row">
+                <div class="submitting-box">
+                    <div class="col-md-8">
+                        <h2>Submitting Contact</h2>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row form-group">
+                            @*<div class="input-group">*@
+                            <input type="text" id="SearchUser" class="form-control" placeholder="Search for User" />
+                            @*<span class="input-group-btn">
+                                    <input class="btn btn-default" type="button" onclick="SearchUser()" value="Search" />
+                                </span>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row form-group">
+                <div class="col-md-4">
+                    <div class="section-col-box">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Name) <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control SubmittingName", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Company) <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.Company, new { @class = "form-control SubmittingCompany", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Company, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Email) <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control SubmittingEmail", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="section-col-box">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Address1) <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.Address1, new { @class = "form-control SubmittingAddress1", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Address1, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Address2)
+                                @Html.TextBoxFor(m => m.Address2, new { @class = "form-control SubmittingAddress2", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Address2, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.StateName) <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.StateName, new { @class = "form-control", @readonly = true })
+                                @*@Html.DropDownListFor(m => m.StateId, new SelectList(Model.States, "Value", "Text"), "Select State", new { @class = "form-control SubmittingStateId", @readonly = true })*@
+                                @Html.ValidationMessageFor(m => m.StateId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.City) <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.City, new { @class = "form-control SubmittingCity", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="section-col-box">
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Zip)
+                                @Html.TextBoxFor(m => m.Zip, new { @class = "form-control SubmittingZip", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Zip, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.MobileNumber) <span class="text-danger">*</span>
+                                @Html.TextBoxFor(m => m.MobileNumber, new { @class = "form-control SubmittingMobileNumber", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.MobileNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.OfficeNumber)
+                                @Html.TextBoxFor(m => m.OfficeNumber, new { @class = "form-control SubmittingOfficeNumber", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.OfficeNumber, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                @Html.LabelFor(m => m.Fax)
+                                @Html.TextBoxFor(m => m.Fax, new { @class = "form-control SubmittingFax", @readonly = true })
+                                @Html.ValidationMessageFor(m => m.Fax, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
